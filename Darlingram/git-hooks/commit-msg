@@ -17,4 +17,4 @@ if ! grep -Pq "^($types):\s*$emoji_class" <<< "$commit_msg"; then
   echo "🙈 If you're doing an 🚨 emergency 🚨 commit, bypass this check with:"
   echo "   git commit --no-verify"
   exit 1
-fiвавава
+fi
