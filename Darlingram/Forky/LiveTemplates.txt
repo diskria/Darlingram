@@ -1,0 +1,144 @@
+<template name="forky_block" description="[.java/.groovy] Forky Multi-Line Code Block"
+    toReformat="true" toShortenFQNames="true" value="// forky start&#10;$END$&#10;// forky end">
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_comment" description="[.java/.groovy] Forky Single-Line Comment"
+    toReformat="false" toShortenFQNames="true" value="// forky commented $END$">
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_comment_block" description="[.java/.groovy] Forky Multi-Line Comment"
+    toReformat="true" toShortenFQNames="true" value="/* forky commented&#10;$END$&#10;*/">
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_inline_comment" description="[.java/.groovy] Forky In-Line Comment"
+    toReformat="false" toShortenFQNames="true" value="/* forky commented $END$ */">
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_if" description="[.java/.groovy] Forky If" toReformat="false"
+    toShortenFQNames="true" value="// forky if&#10;if ($END$)">
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_if_else" description="[.java/.groovy] Forky If+Else" toReformat="false"
+    toShortenFQNames="true"
+    value="// forky if + else&#10;if ($COND$) {&#10;    $END$&#10;} else">
+    <variable name="COND" alwaysStopAt="true" defaultValue="" expression="" />
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_inline_block" description="[.java/.groovy] Forky In-Line Code Block"
+    toReformat="false" toShortenFQNames="true" value="/* forky start */ $END$ /* forky end */">
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_line" description="[.java/.groovy] Forky Single-Line Code Block"
+    toReformat="false" toShortenFQNames="true" value="// forky">
+    <context>
+        <option name="GROOVY" value="true" />
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_prop_block" description="[.properties] Forky Code Block" toReformat="true"
+    toShortenFQNames="true" value="# forky start&#10;$END$&#10;# forky end">
+    <context>
+        <option name="Properties" value="true" />
+    </context>
+</template>
+<template name="forky_prop_comment" description="[.properties] Forky Comment" toReformat="false"
+    toShortenFQNames="true" value="# forky commented $END$">
+    <context>
+        <option name="Properties" value="true" />
+    </context>
+</template>
+<template name="forky_region" description="[.java] Forky Region" toReformat="true"
+    toShortenFQNames="true" value="//region forky&#10;$END$&#10;//endregion forky">
+    <context>
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_wrap_block" description="[.java] Forky Wrapper Block" toReformat="false"
+    toShortenFQNames="true" value="{ // forky wrap start&#10;$END$&#10;} // forky wrap end">
+    <context>
+        <option name="JAVA_CODE" value="true" />
+    </context>
+</template>
+<template name="forky_xml_block" description="[.xml] Forky Multi-Line Code Block"
+    toReformat="true" toShortenFQNames="true"
+    value="&lt;!-- forky start --&gt;&#10;$END$&#10;&lt;!-- forky end --&gt;">
+    <context>
+        <option name="ANDROID" value="false" />
+        <option name="CMAKE" value="false" />
+        <option name="COMPOSE" value="false" />
+        <option name="GROOVY" value="false" />
+        <option name="HTML" value="false" />
+        <option name="JAVA_CODE" value="false" />
+        <option name="JSON" value="false" />
+        <option name="KOTLIN" value="false" />
+        <option name="OTHER" value="true" />
+        <option name="Properties" value="false" />
+        <option name="SHELL_SCRIPT" value="false" />
+        <option name="XML_ATTRIBUTE" value="false" />
+        <option name="c" value="false" />
+        <option name="cpp" value="false" />
+        <option name="objc" value="false" />
+    </context>
+</template>
+<template name="forky_xml_changelog" description="[.xml] Forky Changelog" toReformat="true"
+    toShortenFQNames="true" value="&lt;!-- forky changelog&#10;- $END$&#10;--&gt;">
+    <context>
+        <option name="ANDROID" value="false" />
+        <option name="CMAKE" value="false" />
+        <option name="COMPOSE" value="false" />
+        <option name="GROOVY" value="false" />
+        <option name="HTML" value="false" />
+        <option name="JAVA_CODE" value="false" />
+        <option name="JSON" value="false" />
+        <option name="KOTLIN" value="false" />
+        <option name="OTHER" value="true" />
+        <option name="Properties" value="false" />
+        <option name="SHELL_SCRIPT" value="false" />
+        <option name="XML_ATTRIBUTE" value="false" />
+        <option name="c" value="false" />
+        <option name="cpp" value="false" />
+        <option name="objc" value="false" />
+    </context>
+</template>
+<template name="forky_xml_comment_block" description="[.xml] Forky Multi-Line Comment"
+    toReformat="true" toShortenFQNames="true"
+    value="&lt;!-- forky commented&#10;$END$&#10;--&gt;">
+    <context>
+        <option name="ANDROID" value="false" />
+        <option name="CMAKE" value="false" />
+        <option name="COMPOSE" value="false" />
+        <option name="GROOVY" value="false" />
+        <option name="HTML" value="false" />
+        <option name="JAVA_CODE" value="false" />
+        <option name="JSON" value="false" />
+        <option name="KOTLIN" value="false" />
+        <option name="OTHER" value="true" />
+        <option name="Properties" value="false" />
+        <option name="SHELL_SCRIPT" value="false" />
+        <option name="XML_ATTRIBUTE" value="false" />
+        <option name="c" value="false" />
+        <option name="cpp" value="false" />
+        <option name="objc" value="false" />
+    </context>
+</template>
