@@ -1,0 +1,57 @@
+import com.android.SdkConstants
+import dev.diskria.darlingram.toolkit.extensions.directories
+import dev.diskria.darlingram.toolkit.extensions.getForkLocalProperty
+import dev.diskria.darlingram.toolkit.extensions.value
+import dev.diskria.darlingram.tools.kotlin.extensions.appendPackageName
+import dev.diskria.darlingram.tools.kotlin.extensions.fileName
+import dev.diskria.darlingram.tools.kotlin.extensions.splitByComma
+import dev.diskria.darlingram.tools.kotlin.extensions.toPackageName
+import dev.diskria.darlingram.tools.kotlin.utils.Constants
+
+plugins {
+    alias(config.plugins.android.library)
+    alias(tools.plugins.toolkit)
+}
+
+val packageName: String by rootProject.extra
+val jniWrapperModule: String by rootProject.extra
+
+android {
+    namespace = packageName.appendPackageName(jniWrapperModule.toPackageName())
+
+    compileSdk = config.versions.compile.sdk.value()
+    ndkVersion = config.versions.ndk.value()
+
+    val cmakeVersion: String = config.versions.cmake.value()
+
+    defaultConfig {
+        minSdk = config.versions.min.sdk.value()
+
+        @Suppress("UnstableApiUsage")
+        externalNativeBuild.cmake {
+            version = cmakeVersion
+
+            val cmakeArguments: String = config.versions.args.cmake.value()
+            arguments += cmakeArguments
+
+            val abiFiltersList = getForkLocalProperty("ABI_FILTERS")
+                ?: config.versions.default.abis.value()
+            abiFilters.addAll(abiFiltersList.splitByComma().map(String::trim))
+        }
+    }
+
+    externalNativeBuild.cmake {
+        version = cmakeVersion
+        path = project
+            .directories()
+            .getUpstreamLibraryModule()
+            .resolve(SdkConstants.FD_JNI)
+            .resolve(
+                fileName("CMakeLists", Constants.File.Extension.TXT)
+            )
+    }
+}
+
+dependencies {
+    implementation(tools.kotlin)
+}
