@@ -1,5 +1,19 @@
-apply plugin: 'com.android.application'
+// forky start
+import dev.diskria.darlingram.toolkit.extensions.ProjectExtKt
+import dev.diskria.darlingram.toolkit.plugin.tasks.CleanCMakeCacheTask
+import dev.diskria.darlingram.toolkit.plugin.tasks.ExportAPKTask
+import dev.diskria.darlingram.toolkit.plugin.tasks.GradleToolkitTaskKt
+import kotlin.jvm.JvmClassMappingKt
+// forky end
+// forky commented apply plugin: 'com.android.application'
 
+// forky start
+plugins {
+    alias(config.plugins.android.app)
+    alias(tools.plugins.toolkit)
+}
+// forky end
+/* forky commented
 repositories {
     mavenCentral()
     google()
@@ -8,8 +22,9 @@ repositories {
 configurations {
     compile.exclude module: 'support-v4'
 }
+*/
 
-configurations.all {
+configurations./* forky commented all */ /* forky start */ configureEach /* forky end */ {
     exclude group: 'com.google.firebase', module: 'firebase-core'
     exclude group: 'androidx.recyclerview', module: 'recyclerview'
 }
@@ -17,64 +32,89 @@ configurations.all {
 dependencies {
     implementation project(':TMessagesProj')
     implementation 'androidx.multidex:multidex:2.0.1'
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    // forky commented coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    coreLibraryDesugaring(libs.desugar) // forky
     implementation files('../TMessagesProj/libs/libgsaverification-client.aar')
 }
 
 android {
+    /* forky commented
     compileSdkVersion 34
     buildToolsVersion '34.0.0'
+    */
+    compileSdk = config.versions.compile.sdk.get().toInteger() // forky
 
     defaultConfig.applicationId = APP_PACKAGE
 
-    sourceSets.main.jniLibs.srcDirs = ['../TMessagesProj/jni/']
+    // forky commented sourceSets.main.jniLibs.srcDirs = ['../TMessagesProj/jni/']
 
-    lintOptions {
+    /* forky commented lintOptions */ /* forky start */ lint /* forky end */ {
         disable 'MissingTranslation'
         disable 'ExtraTranslation'
         disable 'BlockedPrivateApi'
+        // forky start
+        disable 'OldTargetApi'
+        disable 'GradleDependency'
+        disable 'ChromeOsAbiSupport'
+        // forky end
     }
 
+    /* forky commented
     dexOptions {
         jumboMode = true
     }
+    */
 
     compileOptions {
+        /* forky commented
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        */
+        sourceCompatibility = targetCompatibility = config.versions.java.get() // forky
 
-        coreLibraryDesugaringEnabled true
+        coreLibraryDesugaringEnabled /* forky start */ = /* forky end */ true
     }
 
     signingConfigs {
         debug {
+            /* forky commented
             storeFile file("../TMessagesProj/config/release.keystore")
             storePassword RELEASE_STORE_PASSWORD
             keyAlias RELEASE_KEY_ALIAS
             keyPassword RELEASE_KEY_PASSWORD
+            */
         }
 
+        /* forky commented
         release {
             storeFile file("../TMessagesProj/config/release.keystore")
             storePassword RELEASE_STORE_PASSWORD
             keyAlias RELEASE_KEY_ALIAS
             keyPassword RELEASE_KEY_PASSWORD
         }
+        */
     }
 
     buildTypes {
         debug {
             debuggable true
             jniDebuggable true
-            signingConfig signingConfigs.debug
+            signingConfig /* forky start */ = /* forky end */ signingConfigs.debug
             applicationIdSuffix ".beta"
             minifyEnabled false
-            shrinkResources false
-            multiDexEnabled true
+            shrinkResources /* forky start */ = /* forky end */ false
+            multiDexEnabled /* forky start */ = /* forky end */ true
+            /* forky commented
             proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-rules-beta.pro'
             ndk.debugSymbolLevel = 'FULL'
+            */
+            // forky start
+            ndk.debugSymbolLevel = 'NONE'
+            applicationIdSuffix null
+            // forky end
         }
 
+        /* forky commented
         standalone {
             debuggable false
             jniDebuggable false
@@ -97,12 +137,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro'
             ndk.debugSymbolLevel = 'FULL'
         }
+        */
     }
 
     sourceSets.debug {
-        manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest.xml'
+        // forky commented manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest.xml'
+        manifest.srcFile ProjectExtKt.directories(project).getTelegramAndroidManifestMinSDK23() // forky
     }
 
+    /* forky commented
     sourceSets.standalone {
         manifest.srcFile '../TMessagesProj/config/release/AndroidManifest.xml'
     }
@@ -110,10 +153,13 @@ android {
     sourceSets.release {
         manifest.srcFile '../TMessagesProj/config/release/AndroidManifest.xml'
     }
+    */
 
-    flavorDimensions "minApi"
+    // forky commented flavorDimensions "minApi"
+    flavorDimensions "afat" // forky
 
     productFlavors {
+        /* forky commented
         bundleAfat {
             ndk {
                 abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
@@ -137,19 +183,30 @@ android {
                 abiVersionCode = 2
             }
         }
+        */
         afat {
+            dimension "afat" // forky
             ndk {
-                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                // forky commented abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                // forky start
+                def abiFiltersList = ProjectExtKt.getForkLocalProperty(project, "ABI_FILTERS")
+                if (abiFiltersList == null) {
+                    abiFiltersList = config.versions.default.abis.get()
+                }
+                abiFilters(*abiFiltersList.split(',').collect { it.trim() })
+                // forky end
             }
             sourceSets.debug {
                 manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
             }
+            /* forky commented
             sourceSets.release {
                 manifest.srcFile '../TMessagesProj/config/release/AndroidManifest_SDK23.xml'
             }
             sourceSets.standalone {
                 manifest.srcFile '../TMessagesProj/config/release/AndroidManifest_standalone.xml'
             }
+            */
             ext {
                 abiVersionCode = 9
             }
@@ -158,34 +215,57 @@ android {
 
     defaultConfig.versionCode = Integer.parseInt(APP_VERSION_CODE)
 
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
+    applicationVariants./* forky commented all */ /* forky start */ configureEach /* forky end */ { variant ->
+        variant.outputs./* forky commented all */ /* forky start */ configureEach /* forky end */ { output ->
             outputFileName = "app.apk"
             output.versionCodeOverride = defaultConfig.versionCode * 10 + variant.productFlavors.get(0).abiVersionCode
         }
     }
 
+    /* forky commented
     variantFilter { variant ->
         def names = variant.flavors*.name
         if (variant.buildType.name != "release" && !names.contains("afat")) {
             setIgnore(true)
         }
     }
+    */
+    // forky start
+    androidComponents {
+        beforeVariants(selector().withBuildType("release")) { variantBuilder ->
+            variantBuilder.enable = false
+        }
+    }
+    // forky end
 
     defaultConfig {
+        /* forky commented
         minSdkVersion 19
         targetSdkVersion 34
-        versionName APP_VERSION_NAME
-        ndkVersion "21.4.7075529"
+        */
+        // forky start
+        minSdk = config.versions.min.sdk.get().toInteger()
+        targetSdk = config.versions.target.sdk.get().toInteger()
+        // forky end
+        versionName /* forky start */ = /* forky end */ APP_VERSION_NAME
+        ndkVersion /* forky commented "21.4.7075529" */ /* forky start */ = config.versions.ndk.get() /* forky end */
 
-        multiDexEnabled true
+        multiDexEnabled /* forky start */ = /* forky end */ true
 
-        vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
+        // forky commented vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
 
         externalNativeBuild {
             cmake {
-                version '3.10.2'
-                arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-16'
+                version /* forky commented '3.10.2' */ /* forky start */ = config.versions.cmake.get() /* forky end */
+                // forky commented arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-16'
+                // forky start
+                arguments config.versions.args.cmake.get()
+                def abiFiltersList = ProjectExtKt.getForkLocalProperty(project, "ABI_FILTERS")
+                if (abiFiltersList == null) {
+                    abiFiltersList = config.versions.default.abis.get()
+                }
+                abiFilters(*abiFiltersList.split(',').collect { it.trim() })
+                // forky end
             }
         }
     }
@@ -193,11 +273,25 @@ android {
     buildFeatures {
         buildConfig = true
     }
-    namespace 'org.telegram.messenger.regular'
+    namespace /* forky start */ = /* forky end */ 'org.telegram.messenger.regular'
 
+    /* forky commented
     lintOptions {
         checkReleaseBuilds false
     }
+    */
 }
 
-apply plugin: 'com.google.gms.google-services'
+// forky commented apply plugin: 'com.google.gms.google-services'
+// forky start
+tasks.matching { it.name.startsWith("assemble") }.configureEach {
+    finalizedBy tasks.named(GradleToolkitTaskKt.getDisplayName(JvmClassMappingKt.getKotlinClass(
+            ExportAPKTask.class
+    )))
+}
+tasks.named("clean") {
+    finalizedBy tasks.named(GradleToolkitTaskKt.getDisplayName(JvmClassMappingKt.getKotlinClass(
+            CleanCMakeCacheTask.class
+    )))
+}
+// forky end

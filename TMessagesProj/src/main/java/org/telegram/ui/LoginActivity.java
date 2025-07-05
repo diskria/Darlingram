@@ -111,7 +111,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.safetynet.SafetyNet;
+// forky commented import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.integrity.IntegrityManager;
 import com.google.android.play.core.integrity.IntegrityManagerFactory;
@@ -1791,6 +1791,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
 
     private boolean isRequestingFirebaseSms;
     private void fillNextCodeParams(Bundle params, TLRPC.auth_SentCode res, boolean animate) {
+        /* forky commented
         if (res instanceof TLRPC.TL_auth_sentCodePaymentRequired) {
             final TLRPC.TL_auth_sentCodePaymentRequired auth = (TLRPC.TL_auth_sentCodePaymentRequired) res;
             params.putString("product", auth.store_product);
@@ -1913,6 +1914,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             }
             return;
         }
+        */
 
         params.putString("phoneHash", res.phone_code_hash);
         if (res.next_type instanceof TLRPC.TL_auth_codeTypeCall) {

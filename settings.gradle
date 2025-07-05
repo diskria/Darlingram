@@ -1,5 +1,25 @@
+// forky start
+private File getGradleSettingsRelativePath() {
+    String gradleSettingsFile = "gradle-configuration/settings/main.gradle.kts"
+    File currentDirectory = rootProject.getProjectDir()
+    while (currentDirectory != null) {
+        File candidate = new File(currentDirectory, gradleSettingsFile)
+        if (candidate.isFile()) {
+            return candidate
+        }
+        currentDirectory = currentDirectory.parentFile
+    }
+    throw new GradleException("Gradle configuration not found")
+}
+apply from: getGradleSettingsRelativePath()
+
+rootProject.name = upstreamName
+includeBuild(forkName + File.separator + toolkitModule)
+// forky end
 include ':TMessagesProj'
 include ':TMessagesProj_App'
+/* forky commented
 include ':TMessagesProj_AppHuawei'
 include ':TMessagesProj_AppHockeyApp'
 include ':TMessagesProj_AppStandalone'
+*/

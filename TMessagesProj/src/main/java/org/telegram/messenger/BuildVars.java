@@ -40,7 +40,19 @@ public class BuildVars {
     public static boolean IS_BILLING_UNAVAILABLE = false;
 
     static {
+        // forky start
+        if (ApplicationLoader.applicationContext == null) {
+            throw new IllegalStateException("BuildVars class must be loaded only after ApplicationLoader.applicationContext has been initialized");
+        }
+        // forky end
         if (ApplicationLoader.applicationContext != null) {
+            // forky start
+            SAFETYNET_KEY = "";
+            IS_BILLING_UNAVAILABLE = true;
+            CHECK_UPDATES = false;
+            APP_ID = BuildConfig.API_ID;
+            APP_HASH = BuildConfig.API_HASH;
+            // forky end
             SharedPreferences sharedPreferences = ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE);
             LOGS_ENABLED = DEBUG_VERSION || sharedPreferences.getBoolean("logsEnabled", DEBUG_VERSION);
             if (LOGS_ENABLED) {
