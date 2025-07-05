@@ -1,0 +1,9 @@
+[submodule "telegram-clients/android"]
+    path = telegram-clients/android
+    url = https://github.com/DrKLO/Telegram.git
+[submodule "telegram-clients/ios"]
+    path = telegram-clients/ios
+    url = https://github.com/TelegramMessenger/Telegram-iOS.git
+[submodule "telegram-clients/desktop"]
+    path = telegram-clients/desktop
+    url = https://github.com/telegramdesktop/tdesktop.git
