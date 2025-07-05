@@ -1,3 +1,12 @@
+<!-- forky start -->
+# 🌸 Darlingram
+
+This is a **fork of Telegram client for Android**.
+For full details, features, and installation instructions, see the [Darlingram README](./Darlingram/README.md).
+
+⬇️ The original Telegram README follows below.
+
+<!-- forky end -->
 ## Telegram messenger for Android
 
 [Telegram](https://telegram.org) is a messaging app with a focus on speed and security. It’s superfast, simple and free.
