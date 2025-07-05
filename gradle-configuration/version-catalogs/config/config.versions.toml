@@ -1,0 +1,21 @@
+[versions]
+agp = "8.11.0"
+kotlin = "2.0.21"
+java = "21"
+cmake = "3.10.2"
+ndk = "21.4.7075529"
+min-sdk = "24"
+target-sdk = "36"
+compile-sdk = "36"
+args-cmake = "-DANDROID_STL=c++_static"
+default-abis = "armeabi-v7a, arm64-v8a, x86, x86_64"
+
+[libraries]
+android-tools = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+
+[plugins]
+android-app = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -1,0 +1,19 @@
+[versions]
+androidx-core = "1.16.0"
+androidx-annotations = "1.9.1"
+appcompat = "1.7.1"
+material = "1.12.0"
+desugar = "2.1.5"
+javapoet = "0.7.0"
+kotlinpoet = "2.2.0"
+kotlin-serialization = "1.7.1"
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-annotations = { group = "androidx.annotation", name = "annotation", version.ref = "androidx-annotations" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
+javapoet = { group = "com.palantir.javapoet", name = "javapoet", version.ref = "javapoet" }
+kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
