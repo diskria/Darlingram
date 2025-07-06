@@ -6,11 +6,14 @@ fun Int?.orZero(): Int =
 fun Long?.orZero(): Long =
     this ?: 0
 
-fun packIntsToLong(high: Int, low: Int): Long =
-    (Integer.toUnsignedLong(high) shl Int.SIZE_BITS) or Integer.toUnsignedLong(low)
-
 fun Long.unpackHighInt(): Int =
     (this ushr Int.SIZE_BITS).toInt()
 
 fun Long.unpackLowInt(): Int =
     toInt()
+
+fun Int.alignPadding(blockSize: Int): Int =
+    (blockSize - (this % blockSize)) % blockSize
+
+fun Boolean.toInt(): Int =
+    if (this) 1 else 0
