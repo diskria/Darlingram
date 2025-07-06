@@ -156,7 +156,7 @@ android {
                 // forky commented arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-16'
                 // forky start
                 arguments config.versions.args.cmake.get()
-                def abiFiltersList = ProjectExtKt.getForkLocalProperty(project, "ABI_FILTERS")
+                def abiFiltersList = ProjectExtKt.getLocalProperty(rootProject, "ABI_FILTERS")
                 if (abiFiltersList == null) {
                     abiFiltersList = config.versions.default.abis.get()
                 }

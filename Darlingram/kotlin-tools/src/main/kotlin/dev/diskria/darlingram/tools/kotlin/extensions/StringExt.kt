@@ -10,8 +10,10 @@ inline fun String?.ifNullOrEmpty(
     if (this == null || this.isEmpty()) fallback()
     else this
 
-fun fileName(name: String, extension: String) =
-    name + Constants.Symbol.DOT + extension
+fun fileName(name: String, vararg extensions: String): String =
+    name + extensions.joinToString(separator = Constants.Symbol.EMPTY) { extension ->
+        Constants.Symbol.DOT + extension
+    }
 
 fun String.capitalizeOnlyFirstChar(): String =
     lowercase(Locale.ROOT).replaceFirstChar { it.uppercaseChar() }

@@ -1,8 +1,8 @@
 import com.android.SdkConstants
 
 plugins {
-    alias(config.plugins.kotlin.jvm)
     `maven-publish`
+    alias(config.plugins.kotlin.jvm)
 }
 
 publishing.publications {

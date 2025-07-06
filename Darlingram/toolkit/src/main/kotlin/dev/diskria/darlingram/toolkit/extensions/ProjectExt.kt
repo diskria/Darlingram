@@ -8,13 +8,19 @@ import java.util.Properties
 fun Project.isFork(): Boolean =
     rootProject.name == Metadata.FORK_NAME
 
-fun Project.getForkLocalProperty(key: String): String? =
+fun Project.isUpstream(): Boolean =
+    isFork().not()
+
+fun Project.getLocalProperty(key: String): String? =
     Properties().apply {
-        project.directories().getForkLocalProperties().inputStream().use { load(it) }
+        rootProject.directories().getForkLocalProperties().inputStream().use { load(it) }
     }.getProperty(key, null)
 
 fun Project.directories(): ProjectDirectories =
     ProjectDirectories(
-        if (isFork()) rootProject.rootDir
-        else rootProject.file(Metadata.FORK_NAME)
+        rootDir.apply {
+            if (isUpstream()) {
+                resolve(Metadata.FORK_NAME)
+            }
+        }
     )

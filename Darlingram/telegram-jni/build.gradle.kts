@@ -1,6 +1,6 @@
 import com.android.SdkConstants
 import dev.diskria.darlingram.toolkit.extensions.directories
-import dev.diskria.darlingram.toolkit.extensions.getForkLocalProperty
+import dev.diskria.darlingram.toolkit.extensions.getLocalProperty
 import dev.diskria.darlingram.toolkit.extensions.value
 import dev.diskria.darlingram.tools.kotlin.extensions.appendPackageName
 import dev.diskria.darlingram.tools.kotlin.extensions.fileName
@@ -34,7 +34,7 @@ android {
             val cmakeArguments: String = config.versions.args.cmake.value()
             arguments += cmakeArguments
 
-            val abiFiltersList = getForkLocalProperty("ABI_FILTERS")
+            val abiFiltersList = getLocalProperty("ABI_FILTERS")
                 ?: config.versions.default.abis.value()
             abiFilters.addAll(abiFiltersList.splitByComma().map(String::trim))
         }

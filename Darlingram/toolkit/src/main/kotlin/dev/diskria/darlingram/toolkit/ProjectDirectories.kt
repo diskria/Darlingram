@@ -17,6 +17,8 @@ class ProjectDirectories(private val forkRoot: File) {
             fileName("local", Constants.File.Extension.PROPERTIES)
         )
 
+    fun getUpstreamRoot(): File = upstreamRoot
+
     fun getJNIWrapperModule(): File =
         forkRoot.resolve(Metadata.JNI_WRAPPER_MODULE)
 
@@ -26,8 +28,6 @@ class ProjectDirectories(private val forkRoot: File) {
             .resolve("build")
             .resolve("generated")
             .resolve("java")
-
-    fun getUpstreamRoot(): File = upstreamRoot
 
     fun getUpstreamLibraryModule(): File =
         upstreamRoot.resolve(Metadata.UPSTREAM_LIBRARY_MODULE)
@@ -82,15 +82,6 @@ class ProjectDirectories(private val forkRoot: File) {
 
     fun getTelegramClientSubmodule(platformType: PlatformType): File =
         upstreamRoot
-            .resolve(TELEGRAM_CLIENTS)
+            .resolve("telegram-clients")
             .resolve(platformType.getSubmoduleDirectoryName())
-
-    companion object {
-        private const val TELEGRAM_CLIENTS = "telegram-clients"
-    }
 }
-
-fun File.getGradleProperties(): File =
-    resolve(
-        fileName("gradle", Constants.File.Extension.PROPERTIES)
-    )

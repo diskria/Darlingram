@@ -3,8 +3,8 @@ import dev.diskria.darlingram.tools.kotlin.extensions.appendPackageName
 import dev.diskria.darlingram.tools.kotlin.extensions.toPackageName
 
 plugins {
-    alias(config.plugins.kotlin.android)
     alias(config.plugins.android.library)
+    alias(config.plugins.kotlin.android)
     alias(tools.plugins.toolkit)
 }
 

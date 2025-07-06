@@ -1,7 +1,7 @@
 package dev.diskria.darlingram.toolkit.plugin.tasks
 
 import dev.diskria.darlingram.Metadata
-import dev.diskria.darlingram.toolkit.extensions.getForkLocalProperty
+import dev.diskria.darlingram.toolkit.extensions.getLocalProperty
 import dev.diskria.darlingram.toolkit.extensions.isFork
 import dev.diskria.darlingram.tools.kotlin.extensions.takeIfExceeds
 import dev.diskria.darlingram.tools.kotlin.utils.Constants
@@ -14,7 +14,7 @@ abstract class ExportAPKTask : GradleToolkitTask(
     "Copies the latest built APK into the repo root"
 ) {
     override fun runTask() {
-        val apkFile = buildDir()
+        val apkFile = buildDirectory
             .walkTopDown()
             .filter { it.isFile && it.extension == Constants.File.Extension.APK }
             .maxByOrNull { it.lastModified() }
@@ -39,8 +39,8 @@ abstract class ExportAPKTask : GradleToolkitTask(
         val outputDirectory = directories.getAPK(project.isFork())
         outputDirectory.mkdirs()
 
-        val filesLimit = project
-            .getForkLocalProperty("APK_FILES_LIMIT")
+        val filesLimit = rootProject
+            .getLocalProperty("APK_FILES_LIMIT")
             ?.toInt()
             ?: DEFAULT_FILES_LIMIT
         apkFile.copyTo(outputDirectory.resolve(apkName), overwrite = true)

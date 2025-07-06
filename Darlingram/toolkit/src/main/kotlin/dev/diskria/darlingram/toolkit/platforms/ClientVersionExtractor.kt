@@ -1,8 +1,9 @@
 package dev.diskria.darlingram.toolkit.platforms
 
 import dev.diskria.darlingram.toolkit.ProjectDirectories
-import dev.diskria.darlingram.toolkit.getGradleProperties
+import dev.diskria.darlingram.tools.kotlin.extensions.fileName
 import dev.diskria.darlingram.tools.kotlin.extensions.readByLines
+import dev.diskria.darlingram.tools.kotlin.utils.Constants
 import dev.diskria.darlingram.tools.kotlin.utils.Semver
 import dev.diskria.darlingram.tools.kotlin.utils.Shell
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -30,7 +31,9 @@ object ClientVersionExtractor {
     ): ClientVersion =
         when (platformType) {
             PlatformType.ANDROID -> {
-                val propertiesFile = projectDirectory.getGradleProperties()
+                val propertiesFile = projectDirectory.resolve(
+                    fileName("gradle", Constants.File.Extension.PROPERTIES)
+                )
                 val properties = Properties().apply {
                     load(propertiesFile.inputStream())
                 }

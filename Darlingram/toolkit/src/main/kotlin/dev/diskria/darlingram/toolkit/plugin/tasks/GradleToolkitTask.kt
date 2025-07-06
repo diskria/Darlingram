@@ -3,6 +3,7 @@ package dev.diskria.darlingram.toolkit.plugin.tasks
 import dev.diskria.darlingram.toolkit.ProjectDirectories
 import dev.diskria.darlingram.toolkit.extensions.directories
 import org.gradle.api.DefaultTask
+import org.gradle.api.Project
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -14,28 +15,37 @@ import kotlin.reflect.KClass
  * All subclasses **must be declared abstract** in order for Gradle to register them correctly via Kotlin DSL.
  *
  */
-sealed class GradleToolkitTask(@Internal val taskDescription: String) : DefaultTask() {
+sealed class GradleToolkitTask(
+    @Internal val taskDescription: String
+) : DefaultTask() {
 
     @Internal
-    val directories: ProjectDirectories = project.directories()
+    val rootProject: Project =
+        project.rootProject
 
     @Internal
-    final override fun getDescription(): String = taskDescription
+    val directories: ProjectDirectories =
+        rootProject.directories()
 
     @Internal
-    final override fun getGroup(): String = "toolkit"
+    val buildDirectory: File =
+        project.layout.buildDirectory.asFile.get()
+
+    @Internal
+    final override fun getDescription(): String =
+        taskDescription
+
+    @Internal
+    final override fun getGroup(): String =
+        "toolkit"
+
+    @Internal
+    protected abstract fun runTask()
 
     @TaskAction
     private fun action() {
         runTask()
     }
-
-    @Internal
-    protected abstract fun runTask()
-
-    @Internal
-    fun buildDir(): File =
-        project.layout.buildDirectory.asFile.get()
 }
 
 @Internal

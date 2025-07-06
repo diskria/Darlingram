@@ -1,6 +1,6 @@
 plugins {
-    alias(config.plugins.kotlin.serialization)
     `kotlin-dsl`
+    alias(config.plugins.kotlin.serialization)
 }
 
 val packageName: String by rootProject.extra
@@ -8,9 +8,8 @@ val toolkitModule: String by rootProject.extra
 
 gradlePlugin {
     plugins {
-        val pluginName = project.name
-        create(pluginName) {
-            id = pluginName
+        create(toolkitModule) {
+            id = toolkitModule
             version = tools.versions.indev.get()
             implementationClass = "$packageName.$toolkitModule.plugin.GradleToolkitPlugin"
         }
@@ -18,12 +17,13 @@ gradlePlugin {
 }
 
 dependencies {
+    implementation(gradleApi())
+
     implementation(libs.androidx.annotations)
     implementation(libs.javapoet)
     implementation(libs.kotlinpoet)
     implementation(libs.kotlin.serialization)
     implementation(tools.kotlin)
-    implementation(gradleApi())
 
     compileOnly(config.android.tools)
 }
