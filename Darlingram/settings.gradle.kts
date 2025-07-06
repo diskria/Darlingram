@@ -40,34 +40,30 @@ rootProject.name = forkName
 
 if (startParameter.taskNames.isEmpty()) {
     includeToolsModules()
-    includeToolkit()
+    includeToolkitModule()
     includeForkModules()
     includeUpstreamProject()
 } else {
     startParameter.taskNames.forEach { taskName ->
         val (module, task) = taskName.parseTaskName()
-        if (task == "publishToMavenLocal") {
-            include(module.toModuleName())
-        } else {
-            includeToolsModules()
-            includeToolkit()
-            when (module) {
-                forkApplicationModule -> includeForkModules()
-                upstreamApplicationModule -> includeUpstreamProject()
-                else -> {
-                    includeForkModules()
-                    includeUpstreamProject()
-                }
+        includeToolsModules()
+        includeToolkitModule()
+        when (module) {
+            forkApplicationModule -> includeForkModules()
+            upstreamApplicationModule -> includeUpstreamProject()
+            else -> {
+                includeForkModules()
+                includeUpstreamProject()
             }
         }
     }
 }
 
 private fun includeToolsModules() {
-    include(kotlinToolsModule.toModuleName())
+    includeBuild(kotlinToolsModule)
 }
 
-private fun includeToolkit() {
+private fun includeToolkitModule() {
     includeBuild(toolkitModule)
 }
 

@@ -1,67 +1,55 @@
-import com.android.SdkConstants
+import dev.diskria.darlingram.tools.gradle.GenerateMetadataTask
+import dev.diskria.darlingram.tools.gradle.metadataConstants
 
 plugins {
     `maven-publish`
     alias(config.plugins.kotlin.jvm)
 }
 
-publishing.publications {
-    val projectName = project.name
-    create<MavenPublication>(projectName) {
-        groupId = tools.versions.dev.get()
-        artifactId = projectName
-        version = tools.versions.indev.get()
-        from(components[SdkConstants.EXT_JAVA])
-    }
-}
-
-private val forkName: String by rootProject.extra
-private val upstreamName: String by rootProject.extra
+private val kotlinToolsModule: String by rootProject.extra
 private val packageName: String by rootProject.extra
-private val forkApplicationModule: String by rootProject.extra
-private val jniWrapperModule: String by rootProject.extra
-private val apiWrapperModule: String by rootProject.extra
-private val upstreamLibraryModule: String by rootProject.extra
-private val upstreamApplicationModule: String by rootProject.extra
 
-private val packagePath = packageName.replace(".", File.separator)
-private val generatedDirectoryProvider = layout.buildDirectory.dir("generated/$packagePath")
-
-val generateMetadataTask = tasks.register("generateMetadata") {
-    inputs.property("forkName", forkName)
-    inputs.property("upstreamName", upstreamName)
-    outputs.dir(generatedDirectoryProvider)
-
-    doLast {
-        val generatedDirectory = generatedDirectoryProvider.get().asFile
-        generatedDirectory.mkdirs()
-
-        val className = "Metadata"
-        File(generatedDirectory, className + SdkConstants.DOT_KT).writeText(
-            """
-            package $packageName
-
-            object $className {
-                const val FORK_NAME: String = "$forkName"
-                const val UPSTREAM_NAME: String = "$upstreamName"
-                const val PACKAGE_NAME: String = "$packageName"
-                const val FORK_APPLICATION_MODULE: String = "$forkApplicationModule"
-                const val JNI_WRAPPER_MODULE: String = "$jniWrapperModule"
-                const val API_WRAPPER_MODULE: String = "$apiWrapperModule"
-                const val UPSTREAM_LIBRARY_MODULE: String = "$upstreamLibraryModule"
-                const val UPSTREAM_APPLICATION_MODULE: String = "$upstreamApplicationModule"
-            }
-            """.trimIndent()
-        )
-    }
+publishing.publications.create<MavenPublication>(kotlinToolsModule) {
+    groupId = tools.versions.dev.get()
+    artifactId = kotlinToolsModule
+    version = tools.versions.indev.get()
+    from(components["java"])
 }
 
-tasks.named("compileKotlin") {
-    dependsOn(generateMetadataTask)
+private val metadataDirectory = layout.buildDirectory.dir("generated")
+
+private val generateMetadataTask = tasks.register<GenerateMetadataTask>("generateMetadata") {
+    metadataDirectory.get().asFile.mkdirs()
+    outputDirectoryProperty.set(metadataDirectory)
+
+    packageNameProperty.set(packageName)
+
+    val metadataConstants = rootProject.extra.properties.metadataConstants()
+    val forkName by metadataConstants
+    val upstreamName by metadataConstants
+    val packageName by metadataConstants
+    val forkApplicationModule by metadataConstants
+    val jniWrapperModule by metadataConstants
+    val apiWrapperModule by metadataConstants
+    val upstreamLibraryModule by metadataConstants
+    val upstreamApplicationModule by metadataConstants
+
+    metadataProperty.set(
+        mapOf(
+            forkName,
+            upstreamName,
+            packageName,
+            forkApplicationModule,
+            jniWrapperModule,
+            apiWrapperModule,
+            upstreamLibraryModule,
+            upstreamApplicationModule,
+        )
+    )
 }
 
 tasks.withType<PublishToMavenLocal>().configureEach {
     dependsOn(generateMetadataTask)
 }
 
-sourceSets[SdkConstants.FD_MAIN].kotlin.srcDir(generatedDirectoryProvider)
+sourceSets["main"].kotlin.srcDir(metadataDirectory)

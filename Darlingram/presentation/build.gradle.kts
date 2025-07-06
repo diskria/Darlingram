@@ -1,5 +1,4 @@
 import dev.diskria.darlingram.toolkit.extensions.buildConfig
-import dev.diskria.darlingram.toolkit.extensions.createGradleTaskRunCommand
 import dev.diskria.darlingram.toolkit.extensions.directories
 import dev.diskria.darlingram.toolkit.extensions.value
 import dev.diskria.darlingram.toolkit.platforms.ClientVersionExtractor
@@ -16,7 +15,6 @@ plugins {
 }
 
 private val packageName: String by rootProject.extra
-private val kotlinToolsModule: String by rootProject.extra
 private val jniWrapperModule: String by rootProject.extra
 private val apiWrapperModule: String by rootProject.extra
 private val upstreamResourcesWrapperModule: String by rootProject.extra
@@ -34,7 +32,7 @@ android {
         versionCode = app.versions.code.value()
         versionName = app.versions.name.value()
 
-        val directories = directories()
+        val directories = rootProject.directories()
         buildConfig(
             "UPSTREAM_VERSION",
             ClientVersionExtractor
@@ -93,10 +91,6 @@ dependencies {
 
 tasks.matching { it.name.startsWith("assemble") }.configureEach {
     finalizedBy(tasks.named(ExportAPKTask::class.getDisplayName()))
-}
-
-tasks.named("preBuild") {
-    dependsOn(createGradleTaskRunCommand(kotlinToolsModule, "generateMetadata"))
 }
 
 tasks.named("clean") {
