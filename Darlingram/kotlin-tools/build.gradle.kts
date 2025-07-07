@@ -25,25 +25,25 @@ private val generateMetadataTask = tasks.register<GenerateMetadataTask>("generat
     packageNameProperty.set(packageName)
 
     val metadataConstants = rootProject.extra.properties.metadataConstants()
-    val forkName by metadataConstants
-    val upstreamName by metadataConstants
+    val projectName by metadataConstants
+    val telegramName by metadataConstants
     val packageName by metadataConstants
-    val forkApplicationModule by metadataConstants
-    val jniWrapperModule by metadataConstants
-    val apiWrapperModule by metadataConstants
-    val upstreamLibraryModule by metadataConstants
-    val upstreamApplicationModule by metadataConstants
+    val applicationModule by metadataConstants
+    val telegramApiModule by metadataConstants
+    val telegramJNIWrapperModule by metadataConstants
+    val telegramLibraryModule by metadataConstants
+    val telegramApplicationModule by metadataConstants
 
     metadataProperty.set(
         mapOf(
-            forkName,
-            upstreamName,
+            projectName,
+            telegramName,
             packageName,
-            forkApplicationModule,
-            jniWrapperModule,
-            apiWrapperModule,
-            upstreamLibraryModule,
-            upstreamApplicationModule,
+            applicationModule,
+            telegramApiModule,
+            telegramJNIWrapperModule,
+            telegramLibraryModule,
+            telegramApplicationModule,
         )
     )
 }

@@ -2,7 +2,7 @@ package dev.diskria.darlingram.toolkit.plugin.tasks
 
 import dev.diskria.darlingram.Metadata
 import dev.diskria.darlingram.toolkit.extensions.getLocalProperty
-import dev.diskria.darlingram.toolkit.extensions.isFork
+import dev.diskria.darlingram.toolkit.extensions.isTelegram
 import dev.diskria.darlingram.tools.kotlin.extensions.takeIfExceeds
 import dev.diskria.darlingram.tools.kotlin.utils.Constants
 import java.text.SimpleDateFormat
@@ -29,14 +29,14 @@ abstract class ExportAPKTask : GradleToolkitTask(
         val time = sdfTime.format(now)
 
         val apkName = listOf(
-            if (project.isFork()) Metadata.FORK_NAME else Metadata.UPSTREAM_NAME,
+            if (project.isTelegram()) Metadata.TELEGRAM_NAME else Metadata.PROJECT_NAME,
             buildType,
             date,
             time
         ).joinToString(Constants.Symbol.UNDERSCORE) +
                 Constants.Symbol.DOT +
                 Constants.File.Extension.APK
-        val outputDirectory = directories.getAPK(project.isFork())
+        val outputDirectory = directories.getAPK(project.isTelegram())
         outputDirectory.mkdirs()
 
         val filesLimit = rootProject

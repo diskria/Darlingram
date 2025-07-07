@@ -7,20 +7,20 @@ import dev.diskria.darlingram.tools.kotlin.utils.Shell
 import java.util.Locale
 
 @Suppress("unused")
-abstract class SyncUpstreamTask : GradleToolkitTask(
+abstract class SyncForkTask : GradleToolkitTask(
     "Merge upstream changes into fork"
 ) {
     override fun runTask() {
-        val upstreamRoot = directories.getUpstreamRoot()
-        val remoteName = Metadata.UPSTREAM_NAME.lowercase(Locale.ROOT)
-        val remoteUrl = PlatformType.ANDROID.repositoryUrl
-        val gitBranch = PlatformType.ANDROID.gitBranch
+        val forkRoot = directories.getForkRoot()
+        val remoteName = Metadata.TELEGRAM_NAME.lowercase(Locale.ROOT)
+        val remoteUrl = PlatformType.MAIN_PLATFORM.repositoryUrl
+        val gitBranch = PlatformType.MAIN_PLATFORM.gitBranch
         val oldVersion = ClientVersionExtractor.extract(
             directories,
-            PlatformType.ANDROID,
-            upstreamRoot
+            PlatformType.MAIN_PLATFORM,
+            forkRoot
         )
-        val shell = Shell(upstreamRoot)
+        val shell = Shell(forkRoot)
         if (shell.runWithOutput("git remote get-url $remoteName") != remoteUrl) {
             shell.run("git remote add $remoteName $remoteUrl")
         }
@@ -43,8 +43,8 @@ abstract class SyncUpstreamTask : GradleToolkitTask(
             if (isMergedSuccessfully) {
                 val newVersion = ClientVersionExtractor.extract(
                     directories,
-                    PlatformType.ANDROID,
-                    upstreamRoot
+                    PlatformType.MAIN_PLATFORM,
+                    forkRoot
                 )
                 if (newVersion != oldVersion) {
                     println(

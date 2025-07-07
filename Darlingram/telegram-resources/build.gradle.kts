@@ -10,10 +10,10 @@ plugins {
 }
 
 val packageName: String by rootProject.extra
-val upstreamResourcesWrapperModule: String by rootProject.extra
+val telegramResourcesWrapperModule: String by rootProject.extra
 
 android {
-    namespace = packageName.appendPackageName(upstreamResourcesWrapperModule.toPackageName())
+    namespace = packageName.appendPackageName(telegramResourcesWrapperModule.toPackageName())
 
     compileSdk = config.versions.compile.sdk.value()
 
@@ -24,7 +24,7 @@ android {
     sourceSets[SdkConstants.FD_MAIN].apply {
         project
             .directories()
-            .getUpstreamLibraryModule()
+            .getTelegramLibraryModule()
             .resolve(SdkConstants.FD_SOURCES)
             .resolve(SdkConstants.FD_MAIN)
             .let { mainDirectory ->

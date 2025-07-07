@@ -22,38 +22,38 @@ private fun String.parseTaskName(): Pair<String, String> =
 private fun String.toModuleName(): String =
     projectSeparator + this
 
-private val forkName: String by extra
-private val upstreamName: String by extra
+private val projectName: String by extra
+private val telegramName: String by extra
 
-private val forkApplicationModule: String by extra
+private val applicationModule: String by extra
+private val telegramApiModule: String by extra
 
 private val kotlinToolsModule: String by extra
 private val toolkitModule: String by extra
 
-private val jniWrapperModule: String by extra
-private val apiWrapperModule: String by extra
-private val upstreamResourcesWrapperModule: String by extra
+private val telegramJNIWrapperModule: String by extra
+private val telegramResourcesWrapperModule: String by extra
 
-private val upstreamApplicationModule: String by extra
+private val telegramApplicationModule: String by extra
 
-rootProject.name = forkName
+rootProject.name = projectName
 
 if (startParameter.taskNames.isEmpty()) {
     includeToolsModules()
     includeToolkitModule()
-    includeForkModules()
-    includeUpstreamProject()
+    includeModules()
+    includeTelegram()
 } else {
     startParameter.taskNames.forEach { taskName ->
         val (module, task) = taskName.parseTaskName()
         includeToolsModules()
         includeToolkitModule()
         when (module) {
-            forkApplicationModule -> includeForkModules()
-            upstreamApplicationModule -> includeUpstreamProject()
+            applicationModule -> includeModules()
+            telegramApplicationModule -> includeTelegram()
             else -> {
-                includeForkModules()
-                includeUpstreamProject()
+                includeModules()
+                includeTelegram()
             }
         }
     }
@@ -67,17 +67,17 @@ private fun includeToolkitModule() {
     includeBuild(toolkitModule)
 }
 
-private fun includeForkModules() {
+private fun includeModules() {
     listOf(
-        forkApplicationModule,
-        jniWrapperModule,
-        apiWrapperModule,
-        upstreamResourcesWrapperModule,
+        applicationModule,
+        telegramApiModule,
+        telegramJNIWrapperModule,
+        telegramResourcesWrapperModule,
     ).forEach { module ->
         include(module.toModuleName())
     }
 }
 
-private fun includeUpstreamProject() {
-    includeBuild(rootDir.parent) { name = upstreamName }
+private fun includeTelegram() {
+    includeBuild(rootDir.parent) { name = telegramName }
 }

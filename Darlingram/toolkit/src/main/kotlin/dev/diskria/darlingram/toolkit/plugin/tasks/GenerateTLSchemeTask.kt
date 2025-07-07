@@ -33,7 +33,7 @@ abstract class GenerateTLSchemeTask : GradleToolkitTask(
             error("Can't find layer version")
         }
 
-        val javaCodegenRoot = directories.getApiWrapperTLSchemeCodegen()
+        val javaCodegenRoot = directories.getTLSchemeCodegen()
         javaCodegenRoot.mkdirs()
 
         val apiConstantsClass = TypeSpec.classBuilder("ApiConstants")

@@ -5,7 +5,7 @@ import java.util.Locale
 
 enum class PlatformType(
     val gitBranch: String,
-    val repositoryUrl: String
+    val repositoryUrl: String,
 ) {
 
     ANDROID(
@@ -35,4 +35,8 @@ enum class PlatformType(
                 if (this == IOS) it.invertCase()
                 else it
             }
+
+    companion object {
+        val MAIN_PLATFORM: PlatformType = ANDROID
+    }
 }

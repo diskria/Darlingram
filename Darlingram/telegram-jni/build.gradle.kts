@@ -14,10 +14,10 @@ plugins {
 }
 
 val packageName: String by rootProject.extra
-val jniWrapperModule: String by rootProject.extra
+val telegramJNIWrapperModule: String by rootProject.extra
 
 android {
-    namespace = packageName.appendPackageName(jniWrapperModule.toPackageName())
+    namespace = packageName.appendPackageName(telegramJNIWrapperModule.toPackageName())
 
     compileSdk = config.versions.compile.sdk.value()
     ndkVersion = config.versions.ndk.value()
@@ -44,7 +44,7 @@ android {
         version = cmakeVersion
         path = project
             .directories()
-            .getUpstreamLibraryModule()
+            .getTelegramLibraryModule()
             .resolve(SdkConstants.FD_JNI)
             .resolve(
                 fileName("CMakeLists", Constants.File.Extension.TXT)

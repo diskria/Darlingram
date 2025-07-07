@@ -9,10 +9,10 @@ plugins {
 }
 
 private val packageName: String by rootProject.extra
-private val apiWrapperModule: String by rootProject.extra
+private val telegramApiModule: String by rootProject.extra
 
 android {
-    namespace = packageName.appendPackageName(apiWrapperModule.toPackageName())
+    namespace = packageName.appendPackageName(telegramApiModule.toPackageName())
 
     compileSdk = config.versions.compile.sdk.value()
 

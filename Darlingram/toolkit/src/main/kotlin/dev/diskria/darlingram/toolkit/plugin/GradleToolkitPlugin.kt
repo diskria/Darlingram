@@ -10,8 +10,8 @@ import org.gradle.api.Project
 class GradleToolkitPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        if (project.name == Metadata.UPSTREAM_APPLICATION_MODULE ||
-            project.name == Metadata.FORK_APPLICATION_MODULE
+        if (project.name == Metadata.APPLICATION_MODULE ||
+            project.name == Metadata.TELEGRAM_APPLICATION_MODULE
         ) {
             GradleToolkitTask::class.sealedSubclasses.forEach { taskClass ->
                 project.tasks.register(taskClass.getDisplayName(), taskClass.java)

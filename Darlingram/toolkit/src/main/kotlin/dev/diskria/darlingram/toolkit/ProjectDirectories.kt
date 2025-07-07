@@ -6,44 +6,46 @@ import dev.diskria.darlingram.tools.kotlin.extensions.fileName
 import dev.diskria.darlingram.tools.kotlin.utils.Constants
 import java.io.File
 
-class ProjectDirectories(private val forkRoot: File) {
+class ProjectDirectories(private val projectRoot: File) {
 
-    private val upstreamRoot: File = forkRoot.parentFile
+    private val forkRoot: File = projectRoot.parentFile
+
+    fun getProjectRoot(): File = projectRoot
 
     fun getForkRoot(): File = forkRoot
 
-    fun getForkLocalProperties(): File =
-        forkRoot.resolve(
+    fun getUpstreamRoot(): File = getTelegramClientSubmodule(PlatformType.MAIN_PLATFORM)
+
+    fun getLocalProperties(): File =
+        projectRoot.resolve(
             fileName("local", Constants.File.Extension.PROPERTIES)
         )
 
-    fun getUpstreamRoot(): File = upstreamRoot
+    fun getTelegramJNIWrapperModule(): File =
+        projectRoot.resolve(Metadata.TELEGRAM_JNI_WRAPPER_MODULE)
 
-    fun getJNIWrapperModule(): File =
-        forkRoot.resolve(Metadata.JNI_WRAPPER_MODULE)
-
-    fun getApiWrapperTLSchemeCodegen(): File =
-        forkRoot
-            .resolve(Metadata.API_WRAPPER_MODULE)
+    fun getTLSchemeCodegen(): File =
+        projectRoot
+            .resolve(Metadata.TELEGRAM_API_MODULE)
             .resolve("build")
             .resolve("generated")
             .resolve("java")
 
-    fun getUpstreamLibraryModule(): File =
-        upstreamRoot.resolve(Metadata.UPSTREAM_LIBRARY_MODULE)
+    fun getTelegramLibraryModule(): File =
+        forkRoot.resolve(Metadata.TELEGRAM_LIBRARY_MODULE)
 
     fun getGitHooks(): File =
-        upstreamRoot.resolve("git-hooks")
+        forkRoot.resolve("git-hooks")
 
     fun getGitModules(): File =
-        upstreamRoot.resolve(".gitmodules")
+        forkRoot.resolve(".gitmodules")
 
-    fun getAPK(isFork: Boolean): File =
-        upstreamRoot
+    fun getAPK(isTelegram: Boolean): File =
+        forkRoot
             .resolve(Constants.File.Extension.APK)
             .resolve(
-                if (isFork) Metadata.FORK_NAME
-                else Metadata.UPSTREAM_NAME
+                if (isTelegram) Metadata.TELEGRAM_NAME
+                else Metadata.PROJECT_NAME
             )
 
     fun getTelegramApiScheme(): File =
@@ -57,7 +59,7 @@ class ProjectDirectories(private val forkRoot: File) {
             )
 
     fun getTelegramAndroidManifestMinSDK23(): File =
-        getUpstreamLibraryModule()
+        getTelegramLibraryModule()
             .resolve("config")
             .resolve("debug")
             .resolve(
@@ -81,7 +83,7 @@ class ProjectDirectories(private val forkRoot: File) {
             .resolve("version")
 
     fun getTelegramClientSubmodule(platformType: PlatformType): File =
-        upstreamRoot
+        forkRoot
             .resolve("telegram-clients")
             .resolve(platformType.getSubmoduleDirectoryName())
 }

@@ -13,8 +13,8 @@ private File getGradleSettingsRelativePath() {
 }
 apply from: getGradleSettingsRelativePath()
 
-rootProject.name = upstreamName
-includeBuild(forkName + File.separator + toolkitModule)
+rootProject.name = telegramName
+includeBuild(projectName + File.separator + toolkitModule)
 // forky end
 include ':TMessagesProj'
 include ':TMessagesProj_App'

@@ -1,8 +1,4 @@
-import dev.diskria.darlingram.toolkit.extensions.buildConfig
-import dev.diskria.darlingram.toolkit.extensions.directories
 import dev.diskria.darlingram.toolkit.extensions.value
-import dev.diskria.darlingram.toolkit.platforms.ClientVersionExtractor
-import dev.diskria.darlingram.toolkit.platforms.PlatformType
 import dev.diskria.darlingram.toolkit.plugin.tasks.CleanCMakeCacheTask
 import dev.diskria.darlingram.toolkit.plugin.tasks.ExportAPKTask
 import dev.diskria.darlingram.toolkit.plugin.tasks.getDisplayName
@@ -15,9 +11,9 @@ plugins {
 }
 
 private val packageName: String by rootProject.extra
-private val jniWrapperModule: String by rootProject.extra
-private val apiWrapperModule: String by rootProject.extra
-private val upstreamResourcesWrapperModule: String by rootProject.extra
+private val telegramApiModule: String by rootProject.extra
+private val telegramJNIWrapperModule: String by rootProject.extra
+private val telegramResourcesWrapperModule: String by rootProject.extra
 
 android {
     namespace = packageName
@@ -31,14 +27,6 @@ android {
 
         versionCode = app.versions.code.value()
         versionName = app.versions.name.value()
-
-        val directories = rootProject.directories()
-        buildConfig(
-            "UPSTREAM_VERSION",
-            ClientVersionExtractor
-                .extract(directories, PlatformType.ANDROID, directories.getUpstreamRoot())
-                .getDisplayName()
-        )
     }
 
     buildTypes {
@@ -85,9 +73,9 @@ dependencies {
     implementation(tools.kotlin)
 
     listOf(
-        jniWrapperModule,
-        apiWrapperModule,
-        upstreamResourcesWrapperModule
+        telegramJNIWrapperModule,
+        telegramApiModule,
+        telegramResourcesWrapperModule
     ).forEach {
         implementation(project(Constants.Symbol.COLON + it))
     }

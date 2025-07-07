@@ -9,7 +9,7 @@ abstract class InstallGitHooksTask : GradleToolkitTask(
 ) {
     override fun runTask() {
         val sourceDirectory = directories.getGitHooks()
-        val gitHooksDirectoryPath = Shell(directories.getUpstreamRoot()).runWithOutput(
+        val gitHooksDirectoryPath = Shell(directories.getForkRoot()).runWithOutput(
             "git rev-parse --git-path hooks"
         )
         val targetDirectory = File(gitHooksDirectoryPath)

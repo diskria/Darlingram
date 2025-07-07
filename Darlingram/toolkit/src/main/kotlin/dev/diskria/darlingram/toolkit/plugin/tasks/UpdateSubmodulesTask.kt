@@ -1,15 +1,22 @@
 package dev.diskria.darlingram.toolkit.plugin.tasks
 
+import dev.diskria.darlingram.toolkit.ProjectDirectories
 import dev.diskria.darlingram.toolkit.platforms.ClientVersionExtractor
 import dev.diskria.darlingram.toolkit.platforms.PlatformType
 import dev.diskria.darlingram.tools.kotlin.utils.Shell
 
 @Suppress("unused")
-abstract class SyncSubmodulesTask : GradleToolkitTask(
+abstract class UpdateSubmodulesTask : GradleToolkitTask(
     "Update submodules"
 ) {
     override fun runTask() {
         PlatformType.values().forEach { platformType ->
+            updateSubmodule(platformType, directories)
+        }
+    }
+
+    companion object {
+        fun updateSubmodule(platformType: PlatformType, directories: ProjectDirectories) {
             val submodule = directories.getTelegramClientSubmodule(platformType)
             val oldVersion = ClientVersionExtractor.extract(directories, platformType, submodule)
             val gitBranch = platformType.gitBranch

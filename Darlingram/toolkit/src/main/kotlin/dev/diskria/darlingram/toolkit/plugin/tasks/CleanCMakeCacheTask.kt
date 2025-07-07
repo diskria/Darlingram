@@ -1,6 +1,6 @@
 package dev.diskria.darlingram.toolkit.plugin.tasks
 
-import dev.diskria.darlingram.toolkit.extensions.isFork
+import dev.diskria.darlingram.toolkit.extensions.isTelegram
 
 @Suppress("unused")
 abstract class CleanCMakeCacheTask : GradleToolkitTask(
@@ -8,8 +8,8 @@ abstract class CleanCMakeCacheTask : GradleToolkitTask(
 ) {
     override fun runTask() {
         val cxxDirectory = directories.run {
-            if (project.isFork()) getJNIWrapperModule()
-            else getUpstreamLibraryModule()
+            if (project.isTelegram()) getTelegramLibraryModule()
+            else getTelegramJNIWrapperModule()
         }.resolve(DIRECTORY_NAME)
         if (cxxDirectory.exists()) {
             cxxDirectory.deleteRecursively()

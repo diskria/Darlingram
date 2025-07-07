@@ -11,36 +11,36 @@ private fun Settings.putMetadata(name: String, value: Any) {
 
 val author = "diskria"
 
-val forkName = "Darlingram"
-val upstreamName = "Telegram"
-val packageName = "dev.$author.${forkName.lowercase(Locale.ROOT)}"
+val projectName = "Darlingram"
+val telegramName = "Telegram"
+val packageName = "dev.$author.${projectName.lowercase(Locale.ROOT)}"
 
-val forkApplicationModule = "presentation"
+val applicationModule = "presentation"
+val telegramApiModule = "telegram-api"
 
 val kotlinToolsModule = "kotlin-tools"
 val toolkitModule = "toolkit"
 
-val jniWrapperModule = "telegram-jni"
-val apiWrapperModule = "telegram-api"
-val upstreamResourcesWrapperModule = "telegram-resources"
+val telegramJNIWrapperModule = "telegram-jni"
+val telegramResourcesWrapperModule = "telegram-resources"
 
-val upstreamLibraryModule = "TMessagesProj"
-val upstreamApplicationModule = upstreamLibraryModule + "_App"
+val telegramLibraryModule = "TMessagesProj"
+val telegramApplicationModule = telegramLibraryModule + "_App"
 
 putMetadata("author", author)
 
-putMetadata("forkName", forkName)
-putMetadata("upstreamName", upstreamName)
+putMetadata("projectName", projectName)
+putMetadata("telegramName", telegramName)
 putMetadata("packageName", packageName)
 
-putMetadata("forkApplicationModule", forkApplicationModule)
+putMetadata("applicationModule", applicationModule)
+putMetadata("telegramApiModule", telegramApiModule)
 
 putMetadata("kotlinToolsModule", kotlinToolsModule)
 putMetadata("toolkitModule", toolkitModule)
 
-putMetadata("jniWrapperModule", jniWrapperModule)
-putMetadata("apiWrapperModule", apiWrapperModule)
-putMetadata("upstreamResourcesWrapperModule", upstreamResourcesWrapperModule)
+putMetadata("telegramJNIWrapperModule", telegramJNIWrapperModule)
+putMetadata("telegramResourcesWrapperModule", telegramResourcesWrapperModule)
 
-putMetadata("upstreamLibraryModule", upstreamLibraryModule)
-putMetadata("upstreamApplicationModule", upstreamApplicationModule)
+putMetadata("telegramLibraryModule", telegramLibraryModule)
+putMetadata("telegramApplicationModule", telegramApplicationModule)

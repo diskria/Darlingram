@@ -5,22 +5,16 @@ import dev.diskria.darlingram.toolkit.ProjectDirectories
 import org.gradle.api.Project
 import java.util.Properties
 
-fun Project.isFork(): Boolean =
-    rootProject.name == Metadata.FORK_NAME
-
-fun Project.isUpstream(): Boolean =
-    isFork().not()
+fun Project.isTelegram(): Boolean =
+    rootProject.name == Metadata.TELEGRAM_NAME
 
 fun Project.getLocalProperty(key: String): String? =
     Properties().apply {
-        rootProject.directories().getForkLocalProperties().inputStream().use { load(it) }
+        rootProject.directories().getLocalProperties().inputStream().use { load(it) }
     }.getProperty(key, null)
 
 fun Project.directories(): ProjectDirectories =
     ProjectDirectories(
-        rootDir.apply {
-            if (isUpstream()) {
-                resolve(Metadata.FORK_NAME)
-            }
-        }
+        if (isTelegram()) rootDir.resolve(Metadata.PROJECT_NAME)
+        else rootDir
     )
