@@ -3,6 +3,7 @@ agp = "8.11.0"
 kotlin = "2.0.21"
 java = "21"
 cmake = "3.10.2"
+desugaring = "2.1.5"
 ndk = "21.4.7075529"
 min-sdk = "24"
 target-sdk = "36"
@@ -12,6 +13,7 @@ default-abis = "armeabi-v7a, arm64-v8a, x86, x86_64"
 
 [libraries]
 android-tools = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+desugaring = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugaring" }
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "agp" }

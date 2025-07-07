@@ -23,6 +23,8 @@ android {
     val javaVersion: Int = config.versions.java.value()
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         JavaVersion.toVersion(javaVersion).run {
             sourceCompatibility = this
             targetCompatibility = this
@@ -35,5 +37,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(config.desugaring)
+
     implementation(tools.kotlin)
 }
