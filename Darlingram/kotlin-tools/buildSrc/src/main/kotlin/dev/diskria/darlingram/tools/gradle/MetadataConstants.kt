@@ -13,7 +13,8 @@ class MetadataConstants(private val properties: Map<String, Any?>) {
 
     private fun String.toConstantName(): String =
         this
-            .replace(Regex("([a-z])([A-Z]+)"), "$1_$2")
+            .replace(Regex("([A-Z]+)([A-Z][a-z])"), "$1_$2")
+            .replace(Regex("([a-z])([A-Z])"), "$1_$2")
             .uppercase(Locale.ROOT)
 }
 
