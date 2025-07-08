@@ -5,7 +5,8 @@ import dev.diskria.darlingram.api.models.common.TLPrimitive
 import dev.diskria.darlingram.api.models.extensions.toTLFloat
 import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedOperation
 
-class TLFloat(private val value: Float) : TLPrimitive<Float>() {
+@JvmInline
+value class TLFloat(private val value: Float) : TLPrimitive<Float> {
 
     override fun getConstructor(): TLConstructor = unsupportedOperation()
 

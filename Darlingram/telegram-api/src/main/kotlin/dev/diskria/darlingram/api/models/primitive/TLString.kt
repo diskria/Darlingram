@@ -6,7 +6,8 @@ import dev.diskria.darlingram.api.models.extensions.toTLString
 import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedOperation
 import dev.diskria.darlingram.tools.kotlin.utils.Constants
 
-class TLString(private val value: String) : TLPrimitive<String>() {
+@JvmInline
+value class TLString(private val value: String) : TLPrimitive<String> {
 
     override fun getConstructor(): TLConstructor = unsupportedOperation()
 

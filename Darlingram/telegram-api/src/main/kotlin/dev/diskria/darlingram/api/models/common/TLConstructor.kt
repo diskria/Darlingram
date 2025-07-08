@@ -1,5 +1,9 @@
 package dev.diskria.darlingram.api.models.common
 
-import dev.diskria.darlingram.api.models.primitive.TLInt
+@JvmInline
+value class TLConstructor(private val id: Int) : TLPrimitive<Int> {
 
-class TLConstructor(id: Int) : TLInt(id)
+    override fun getConstructor(): TLConstructor = this
+
+    override fun toRaw(): Int = id
+}

@@ -1,5 +1,6 @@
 package dev.diskria.darlingram.api.utils
 
+import dev.diskria.darlingram.api.models.common.TLConstructor
 import dev.diskria.darlingram.api.models.common.TLObject
 import dev.diskria.darlingram.api.models.common.TLPrimitive
 import dev.diskria.darlingram.api.models.extensions.decodeBytes
@@ -144,6 +145,7 @@ abstract class TLProtocol {
 
     inline fun <reified T : TLPrimitive<*>> read(defaultValue: T? = null): T =
         when (T::class) {
+            TLConstructor::class -> readInt(defaultValue as TLInt).getConstructor()
             TLByte::class -> readByte(defaultValue as TLByte)
             TLInt::class -> readInt(defaultValue as TLInt)
             TLLong::class -> readLong(defaultValue as TLLong)
@@ -157,6 +159,7 @@ abstract class TLProtocol {
 
     inline fun <reified T : TLPrimitive<*>> write(value: T) {
         when (value) {
+            is TLConstructor -> writeInt(value.toRaw().toTLInt())
             is TLByte -> writeByte(value)
             is TLInt -> writeInt(value)
             is TLLong -> writeLong(value)

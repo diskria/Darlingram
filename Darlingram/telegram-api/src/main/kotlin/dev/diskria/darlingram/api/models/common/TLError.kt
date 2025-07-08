@@ -8,7 +8,7 @@ import dev.diskria.darlingram.api.utils.TLProtocol
 class TLError(
     val code: TLInt,
     val text: TLString,
-) : TLObject() {
+) : TLObject {
 
     override fun getConstructor(): TLConstructor = CONSTRUCTOR
 

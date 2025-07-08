@@ -3,7 +3,7 @@ package dev.diskria.darlingram.api.models.primitive
 import dev.diskria.darlingram.api.models.common.TLConstructor
 import dev.diskria.darlingram.api.models.common.TLPrimitive
 
-sealed class TLBoolean : TLPrimitive<Boolean>() {
+sealed class TLBoolean : TLPrimitive<Boolean> {
 
     abstract override fun getConstructor(): TLConstructor
 

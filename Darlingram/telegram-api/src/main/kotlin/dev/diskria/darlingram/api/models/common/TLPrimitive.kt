@@ -1,5 +1,5 @@
 package dev.diskria.darlingram.api.models.common
 
-abstract class TLPrimitive<T> : TLObject() {
-    abstract fun toRaw(): T
+interface TLPrimitive<T> : TLObject {
+    fun toRaw(): T
 }

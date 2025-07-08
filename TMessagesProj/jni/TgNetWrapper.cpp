@@ -13,7 +13,6 @@
 #include <openssl/pem.h>
 #include <openssl/aes.h>
 
-
 JavaVM *java;
 
 jclass jclass_RequestTimeDelegate;

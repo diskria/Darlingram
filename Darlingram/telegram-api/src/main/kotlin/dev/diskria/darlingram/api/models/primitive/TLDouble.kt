@@ -5,7 +5,8 @@ import dev.diskria.darlingram.api.models.common.TLPrimitive
 import dev.diskria.darlingram.api.models.extensions.toTLDouble
 import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedOperation
 
-class TLDouble(private val value: Double) : TLPrimitive<Double>() {
+@JvmInline
+value class TLDouble(private val value: Double) : TLPrimitive<Double> {
 
     override fun getConstructor(): TLConstructor = unsupportedOperation()
 

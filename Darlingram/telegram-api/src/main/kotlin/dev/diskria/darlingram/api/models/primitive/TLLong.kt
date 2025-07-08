@@ -9,7 +9,8 @@ import dev.diskria.darlingram.api.utils.TLProtocol
 import dev.diskria.darlingram.tools.kotlin.extensions.packIntsToLong
 import dev.diskria.darlingram.tools.kotlin.extensions.unpackHighInt
 
-class TLLong(private val value: Long) : TLPrimitive<Long>() {
+@JvmInline
+value class TLLong(private val value: Long) : TLPrimitive<Long> {
 
     override fun getConstructor(): TLConstructor = value.unpackHighInt().toTLConstructor()
 

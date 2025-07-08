@@ -2,15 +2,15 @@ package dev.diskria.darlingram.api.models.common
 
 import dev.diskria.darlingram.api.utils.TLProtocol
 
-abstract class TLObject {
+interface TLObject {
 
-    abstract fun getConstructor(): TLConstructor
+    fun getConstructor(): TLConstructor
 
-    protected open fun serializeInternal(output: TLProtocol) {
+    fun serializeInternal(output: TLProtocol) {
 
     }
 
-    open fun serialize(output: TLProtocol) {
+    fun serialize(output: TLProtocol) {
         output.write(getConstructor())
         serializeInternal(output)
     }
