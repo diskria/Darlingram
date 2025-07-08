@@ -5,9 +5,9 @@ import dev.diskria.darlingram.api.models.extensions.toTLConstructor
 
 object TLBooleanTrue : TLBoolean() {
 
+    val CONSTRUCTOR: TLConstructor = 0x997275b5.toTLConstructor()
+
     override fun getConstructor(): TLConstructor = CONSTRUCTOR
 
     override fun toRaw(): Boolean = true
-
-    val CONSTRUCTOR: TLConstructor = 0x997275b5.toTLConstructor()
 }

@@ -18,7 +18,7 @@ sealed class TLBoolean : TLPrimitive<Boolean>() {
             when (constructor) {
                 TLBooleanTrue.CONSTRUCTOR -> TLBooleanTrue
                 TLBooleanFalse.CONSTRUCTOR -> TLBooleanFalse
-                else -> defaultValue ?: error("Can't read Boolean")
+                else -> defaultValue ?: error("Cannot read Boolean")
             }
     }
 }

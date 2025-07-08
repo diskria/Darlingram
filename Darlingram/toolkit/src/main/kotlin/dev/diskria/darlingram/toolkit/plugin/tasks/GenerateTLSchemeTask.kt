@@ -30,7 +30,7 @@ abstract class GenerateTLSchemeTask : GradleToolkitTask(
             }
         }
         if (layerVersion == null) {
-            error("Can't find layer version")
+            error("Cannot get layer version")
         }
 
         val javaCodegenRoot = directories.getTLSchemeCodegen()

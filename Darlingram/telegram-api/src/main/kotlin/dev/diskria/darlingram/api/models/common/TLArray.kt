@@ -1,10 +1,9 @@
-package dev.diskria.darlingram.api.models.primitive
+package dev.diskria.darlingram.api.models.common
 
-import dev.diskria.darlingram.api.models.common.TLConstructor
-import dev.diskria.darlingram.api.models.common.TLObject
-import dev.diskria.darlingram.api.models.extensions.toTLConstructor
 import dev.diskria.darlingram.api.models.extensions.toTLArray
+import dev.diskria.darlingram.api.models.extensions.toTLConstructor
 import dev.diskria.darlingram.api.models.extensions.toTLInt
+import dev.diskria.darlingram.api.models.primitive.TLInt
 import dev.diskria.darlingram.api.utils.TLProtocol
 import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
 
@@ -35,7 +34,7 @@ class TLArray<T : TLObject>(val list: List<T>) : TLObject() {
                         deserializer(input, input.read())
                     }.toTLArray()
                 }
-            } ?: error("Can't parse TLVector")
+            } ?: error("Cannot read TLArray")
 
         fun <T : TLObject> serialize(output: TLProtocol, list: List<T>) {
             output.write(CONSTRUCTOR)

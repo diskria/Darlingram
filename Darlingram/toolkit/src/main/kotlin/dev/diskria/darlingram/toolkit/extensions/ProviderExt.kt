@@ -1,5 +1,6 @@
 package dev.diskria.darlingram.toolkit.extensions
 
+import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedType
 import org.gradle.api.provider.Provider
 
 inline fun <reified T> Provider<String>.value(): T {
@@ -11,6 +12,6 @@ inline fun <reified T> Provider<String>.value(): T {
         Float::class -> rawString.toFloat() as T
         Double::class -> rawString.toDouble() as T
         String::class -> rawString as T
-        else -> error("Unsupported type: ${T::class}")
+        else -> unsupportedType(T::class)
     }
 }

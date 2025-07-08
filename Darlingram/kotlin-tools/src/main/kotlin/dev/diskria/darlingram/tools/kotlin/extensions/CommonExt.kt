@@ -7,12 +7,14 @@ inline fun <T> tryCatch(block: () -> T): T? =
         null
     }
 
-inline fun <T> tryCatch(default: T, block: () -> T): T =
+inline fun <T> tryCatch(defaultValue: T, block: () -> T): T =
     try {
         block()
     } catch (_: Exception) {
-        default
+        defaultValue
     }
 
 fun packIntsToLong(high: Int, low: Int): Long =
     (Integer.toUnsignedLong(high) shl Int.SIZE_BITS) or Integer.toUnsignedLong(low)
+
+infix fun Int.downUntil(to: Int) = (this - 1).downTo(to)

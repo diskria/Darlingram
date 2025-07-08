@@ -13,6 +13,7 @@
 #include <openssl/pem.h>
 #include <openssl/aes.h>
 
+
 JavaVM *java;
 
 jclass jclass_RequestTimeDelegate;
@@ -726,3 +727,45 @@ if (!(condition)) {       \
 #undef ENSURE
     } while (1);
 }
+// forky start
+extern "C" JNIEXPORT jlong JNICALL
+Java_org_telegram_tgnet_NativeByteBuffer_native_1getFreeBuffer(JNIEnv *env, jclass c, jint length) {
+    return getFreeBuffer(env, c, length);
+}
+extern "C" JNIEXPORT jobject JNICALL
+Java_org_telegram_tgnet_NativeByteBuffer_native_1getJavaByteBuffer(JNIEnv *env, jclass c, jlong address) {
+    return getJavaByteBuffer(env, c, address);
+}
+extern "C" JNIEXPORT jint JNICALL
+Java_org_telegram_tgnet_NativeByteBuffer_native_1limit(JNIEnv *env, jclass c, jlong address) {
+    return limit(env, c, address);
+}
+extern "C" JNIEXPORT jint JNICALL
+Java_org_telegram_tgnet_NativeByteBuffer_native_1position(JNIEnv *env, jclass c, jlong address) {
+    return position(env, c, address);
+}
+extern "C" JNIEXPORT void JNICALL
+Java_org_telegram_tgnet_NativeByteBuffer_native_1reuse(JNIEnv *env, jclass c, jlong address) {
+    reuse(env, c, address);
+}
+extern "C" JNIEXPORT jlong JNICALL
+Java_dev_diskria_darlingram_api_utils_TLByteBuffer_native_1getFreeBuffer(JNIEnv *env, jclass c, jint length) {
+    return getFreeBuffer(env, c, length);
+}
+extern "C" JNIEXPORT jobject JNICALL
+Java_dev_diskria_darlingram_api_utils_TLByteBuffer_native_1getJavaByteBuffer(JNIEnv *env, jclass c, jlong address) {
+    return getJavaByteBuffer(env, c, address);
+}
+extern "C" JNIEXPORT jint JNICALL
+Java_dev_diskria_darlingram_api_utils_TLByteBuffer_native_1limit(JNIEnv *env, jclass c, jlong address) {
+    return limit(env, c, address);
+}
+extern "C" JNIEXPORT jint JNICALL
+Java_dev_diskria_darlingram_api_utils_TLByteBuffer_native_1position(JNIEnv *env, jclass c, jlong address) {
+    return position(env, c, address);
+}
+extern "C" JNIEXPORT void JNICALL
+Java_dev_diskria_darlingram_api_utils_TLByteBuffer_native_1reuse(JNIEnv *env, jclass c, jlong address) {
+    reuse(env, c, address);
+}
+// forky end
