@@ -13,21 +13,14 @@ import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
 import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedOperation
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
+import java.io.File
 
-class TLInputStream(byteArray: ByteArray) : TLProtocol() {
+class TLInputStream private constructor(inputStream: ByteArrayInputStream) : TLStream() {
 
-    private val stream: ByteArrayInputStream = ByteArrayInputStream(byteArray)
-
-    private val buffer: DataInputStream = DataInputStream(stream)
-
-    override fun getLength(): Int = stream.available()
-
-    override fun getPosition(): Int = 0
-
-    override fun remaining(): Int = stream.available()
+    private val buffer: DataInputStream =
+        DataInputStream(inputStream)
 
     override fun cleanup() {
-        stream.close()
         buffer.close()
     }
 
@@ -54,8 +47,6 @@ class TLInputStream(byteArray: ByteArray) : TLProtocol() {
         buffer.read(output.toRaw(), offset, length)
     }
 
-    override fun toByteArray(): ByteArray = unsupportedOperation()
-
     override fun writeByte(value: TLByte) = unsupportedOperation()
 
     override fun writeInt(value: TLInt) = unsupportedOperation()
@@ -63,4 +54,12 @@ class TLInputStream(byteArray: ByteArray) : TLProtocol() {
     override fun writeLong(value: TLLong) = unsupportedOperation()
 
     override fun writeBytes(value: TLByteArray, offset: Int, length: Int) = unsupportedOperation()
+
+    companion object {
+        fun newInstance(byteArray: ByteArray): TLInputStream =
+            TLInputStream(byteArray.inputStream())
+
+        fun newInstance(file: File): TLInputStream =
+            newInstance(file.readBytes())
+    }
 }

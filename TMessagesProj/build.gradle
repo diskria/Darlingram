@@ -1,6 +1,7 @@
 // forky start
-import dev.diskria.darlingram.toolkit.extensions.ProjectExtKt
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.ProjectExtKt
 import dev.diskria.darlingram.tools.kotlin.extensions.StringExtKt
+import dev.diskria.darlingram.tools.kotlin.utils.Constants
 // forky end
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
@@ -8,7 +9,7 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 // forky start
 plugins {
     alias(config.plugins.android.library)
-    alias(tools.plugins.toolkit)
+    alias(toolkit.plugins.gradle.plugin)
 }
 // forky end
 
@@ -82,7 +83,7 @@ dependencies {
     implementation 'com.google.android.recaptcha:recaptcha:18.4.0'
 
     // forky commented coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-    coreLibraryDesugaring(libs.desugar) // forky
+    coreLibraryDesugaring(ProjectExtKt.getCatalogLibrary(rootProject, "config", "desugaring")) // forky
 }
 
 def isWindows = String.valueOf(DefaultNativePlatform.currentOperatingSystem.toFamilyName() == OperatingSystemFamily.WINDOWS)
@@ -94,7 +95,7 @@ android {
     compileSdk = config.versions.compile.sdk.get().toInteger() // forky
     ndkVersion /* forky commented "21.4.7075529" */ /* forky start */ = config.versions.ndk.get() /* forky end */
 
-    // forky commented sourceSets.main.jniLibs.srcDirs = ['./jni/']
+    sourceSets.main.jniLibs.srcDirs = ['./jni/']
 
     def cmakeVersion = config.versions.cmake.get() // forky
     externalNativeBuild {
@@ -176,7 +177,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-rules-beta.pro'
             ndk.debugSymbolLevel = 'FULL'
             */
-            buildConfigField "String", "BUILD_VERSION_STRING", /* forky commented "\"" + APP_VERSION_NAME + "\"" */ /* forky start */ "\"\"" /* forky end */
+            buildConfigField "String", "BUILD_VERSION_STRING", /* forky commented "\"" + APP_VERSION_NAME + "\"" */ /* forky start */ StringExtKt.wrapWithDoubleQuote(Constants.Symbol.EMPTY) /* forky end */
             /* forky commented
             buildConfigField "String", "APP_CENTER_HASH", "\"\""
             buildConfigField "String", "BETA_URL", "\"" + getProps("BETA_PRIVATE_URL") + "\""
@@ -185,10 +186,9 @@ android {
             buildConfigField "boolean", "DEBUG_PRIVATE_VERSION", /* forky commented "true" */ /* forky start */ "false" /* forky end */
             buildConfigField "boolean", "BUILD_HOST_IS_WINDOWS", isWindows
             // forky start
-            def darlingramLocalProperties = new Properties()
-            darlingramLocalProperties.load(file('../Darlingram/local.properties').newInputStream())
-            def apiId = darlingramLocalProperties.getProperty("API_ID")
-            def apiHash = darlingramLocalProperties.getProperty("API_HASH")
+            buildConfigField "String", "APPLICATION_ID", StringExtKt.wrapWithDoubleQuote(telegramPackageName)
+            def apiId = ProjectExtKt.getLocalProperty(rootProject, "API_ID")
+            def apiHash = ProjectExtKt.getLocalProperty(rootProject, "API_HASH")
             if (apiId == null || apiHash == null) {
                 throw new GradleException("Missing API_ID and/or API_HASH in local.properties!")
             }

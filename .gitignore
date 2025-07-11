@@ -17,4 +17,6 @@ TMessagesProj_AppHuawei/afat/
 .vscode/
 .cxx/
 apk/
+bin/
+build_uuid.txt
 # forky end

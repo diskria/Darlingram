@@ -8,76 +8,83 @@ private fun getGradleSettingsRelativePath(): File =
 
 apply(from = getGradleSettingsRelativePath())
 
-private val projectSeparator = ":"
-
-private fun String.parseTaskName(): Pair<String, String> =
-    split(projectSeparator)
-        .filter { it.isNotEmpty() }
-        .let { parts ->
-            val task = parts.lastOrNull().orEmpty()
-            val module = parts.dropLast(1).lastOrNull().orEmpty()
-            module to task
-        }
-
-private fun String.toModuleName(): String =
-    projectSeparator + this
+private val projectSeparator: String by extra
 
 private val projectName: String by extra
+private val applicationModuleName: String by extra
+private val telegramApiModuleName: String by extra
+private val telegramJNIWrapperModuleName: String by extra
+private val telegramResourcesWrapperModuleName: String by extra
+
 private val telegramName: String by extra
 
-private val applicationModule: String by extra
-private val telegramApiModule: String by extra
+private val toolkitName: String by extra
+private val pluginsDirectory: String by extra
+private val toolsDirectory: String by extra
 
-private val kotlinToolsModule: String by extra
-private val toolkitModule: String by extra
-
-private val telegramJNIWrapperModule: String by extra
-private val telegramResourcesWrapperModule: String by extra
-
-private val telegramApplicationModule: String by extra
+private fun String.getProjectName(): String =
+    split(projectSeparator)
+        .filter { it.isNotEmpty() }
+        .dropLast(1)
+        .lastOrNull()
+        .orEmpty()
 
 rootProject.name = projectName
 
+includeToolkit()
 if (startParameter.taskNames.isEmpty()) {
-    includeToolsModules()
-    includeToolkitModule()
-    includeModules()
+    includeProjectModules()
     includeTelegram()
 } else {
     startParameter.taskNames.forEach { taskName ->
-        val (module, task) = taskName.parseTaskName()
-        includeToolsModules()
-        includeToolkitModule()
-        when (module) {
-            applicationModule -> includeModules()
-            telegramApplicationModule -> includeTelegram()
+        when (taskName.getProjectName()) {
+            projectName -> includeProjectModules()
+            telegramName -> includeTelegram()
             else -> {
-                includeModules()
+                includeProjectModules()
                 includeTelegram()
             }
         }
     }
 }
 
-private fun includeToolsModules() {
-    includeBuild(kotlinToolsModule)
-}
-
-private fun includeToolkitModule() {
-    includeBuild(toolkitModule)
-}
-
-private fun includeModules() {
+private fun includeProjectModules() {
     listOf(
-        applicationModule,
-        telegramApiModule,
-        telegramJNIWrapperModule,
-        telegramResourcesWrapperModule,
-    ).forEach { module ->
-        include(module.toModuleName())
+        applicationModuleName,
+        telegramApiModuleName,
+        telegramJNIWrapperModuleName,
+        telegramResourcesWrapperModuleName,
+    ).forEach { moduleName ->
+        val subProjectName = projectSeparator + projectName + projectSeparator + moduleName
+        include(subProjectName)
+        project(subProjectName).projectDir = file(moduleName)
     }
 }
 
 private fun includeTelegram() {
-    includeBuild(rootDir.parent) { name = telegramName }
+    includeBuild(rootDir.parentFile) {
+        name = telegramName
+    }
+}
+
+private fun includeToolkit() {
+    listOf(
+        toolsDirectory,
+        pluginsDirectory
+    ).forEach { directory ->
+        rootDir
+            .parentFile
+            .resolve(toolkitName)
+            .resolve(directory)
+            .listFiles()
+            .filterNot { it.isHidden }
+            .forEach { subProject ->
+                includeBuild(subProject) {
+                    val subProjectName = subProject.name.split("-").joinToString("-") {
+                        it.replaceFirstChar(Char::uppercaseChar)
+                    }
+                    name = toolkitName + "-" + subProjectName
+                }
+            }
+    }
 }

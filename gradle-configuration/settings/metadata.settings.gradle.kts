@@ -9,38 +9,60 @@ private fun Settings.putMetadata(name: String, value: Any) {
     }
 }
 
+val projectSeparator = ":"
+val packageSeparator = "."
+val pathSeparator = "/"
+
+val topLevelDomain = "dev"
 val author = "diskria"
+val namespace = topLevelDomain + packageSeparator + author
 
 val projectName = "Darlingram"
+val applicationModuleName = "darlingram-app"
+val telegramApiModuleName = "telegram-api"
+val telegramJNIWrapperModuleName = "telegram-jni"
+val telegramResourcesWrapperModuleName = "telegram-resources"
+val packageName = namespace + packageSeparator + projectName.lowercase(Locale.ROOT)
+
 val telegramName = "Telegram"
-val packageName = "dev.$author.${projectName.lowercase(Locale.ROOT)}"
+val telegramApplicationModuleName = "telegram-app"
+val telegramLibraryModuleName = "telegram-library"
+val telegramLibraryModuleDirectory = "TMessagesProj"
+val telegramApplicationModuleDirectory = telegramLibraryModuleDirectory + "_App"
+val telegramPackageName = namespace + packageSeparator + telegramName.lowercase(Locale.ROOT)
+val telegramAppIconComponentNamePrefix = "org.telegram.messenger."
+val telegramDefaultAppIconComponentName = "DefaultIcon"
 
-val applicationModule = "presentation"
-val telegramApiModule = "telegram-api"
+val toolkitName = "Toolkit"
+val pluginsDirectory = "plugins"
+val toolsDirectory = "tools"
+val kotlinToolsModuleName = "kotlin-tools"
+val gradlePluginModuleName = "gradle-plugin"
 
-val kotlinToolsModule = "kotlin-tools"
-val toolkitModule = "toolkit"
-
-val telegramJNIWrapperModule = "telegram-jni"
-val telegramResourcesWrapperModule = "telegram-resources"
-
-val telegramLibraryModule = "TMessagesProj"
-val telegramApplicationModule = telegramLibraryModule + "_App"
+putMetadata("projectSeparator", projectSeparator)
+putMetadata("packageSeparator", packageSeparator)
+putMetadata("pathSeparator", pathSeparator)
 
 putMetadata("author", author)
 
 putMetadata("projectName", projectName)
-putMetadata("telegramName", telegramName)
+putMetadata("applicationModuleName", applicationModuleName)
+putMetadata("telegramApiModuleName", telegramApiModuleName)
+putMetadata("telegramJNIWrapperModuleName", telegramJNIWrapperModuleName)
+putMetadata("telegramResourcesWrapperModuleName", telegramResourcesWrapperModuleName)
 putMetadata("packageName", packageName)
 
-putMetadata("applicationModule", applicationModule)
-putMetadata("telegramApiModule", telegramApiModule)
+putMetadata("telegramName", telegramName)
+putMetadata("telegramApplicationModuleName", telegramApplicationModuleName)
+putMetadata("telegramLibraryModuleName", telegramLibraryModuleName)
+putMetadata("telegramApplicationModuleDirectory", telegramApplicationModuleDirectory)
+putMetadata("telegramLibraryModuleDirectory", telegramLibraryModuleDirectory)
+putMetadata("telegramPackageName", telegramPackageName)
+putMetadata("telegramAppIconComponentNamePrefix", telegramAppIconComponentNamePrefix)
+putMetadata("telegramDefaultAppIconComponentName", telegramDefaultAppIconComponentName)
 
-putMetadata("kotlinToolsModule", kotlinToolsModule)
-putMetadata("toolkitModule", toolkitModule)
-
-putMetadata("telegramJNIWrapperModule", telegramJNIWrapperModule)
-putMetadata("telegramResourcesWrapperModule", telegramResourcesWrapperModule)
-
-putMetadata("telegramLibraryModule", telegramLibraryModule)
-putMetadata("telegramApplicationModule", telegramApplicationModule)
+putMetadata("toolkitName", toolkitName)
+putMetadata("pluginsDirectory", pluginsDirectory)
+putMetadata("toolsDirectory", toolsDirectory)
+putMetadata("kotlinToolsModuleName", kotlinToolsModuleName)
+putMetadata("gradlePluginModuleName", gradlePluginModuleName)

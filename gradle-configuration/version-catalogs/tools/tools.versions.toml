@@ -1,9 +1,0 @@
-[versions]
-dev = "dev"
-indev = "indev"
-
-[plugins]
-toolkit = { id = "toolkit", version.ref = "indev" }
-
-[libraries]
-kotlin = { group = "dev", name = "kotlin-tools", version.ref = "indev" }

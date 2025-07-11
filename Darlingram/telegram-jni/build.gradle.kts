@@ -1,7 +1,7 @@
 import com.android.SdkConstants
-import dev.diskria.darlingram.toolkit.extensions.directories
-import dev.diskria.darlingram.toolkit.extensions.getLocalProperty
-import dev.diskria.darlingram.toolkit.extensions.value
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.directories
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.getLocalProperty
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.value
 import dev.diskria.darlingram.tools.kotlin.extensions.appendPackageName
 import dev.diskria.darlingram.tools.kotlin.extensions.fileName
 import dev.diskria.darlingram.tools.kotlin.extensions.splitByComma
@@ -10,14 +10,14 @@ import dev.diskria.darlingram.tools.kotlin.utils.Constants
 
 plugins {
     alias(config.plugins.android.library)
-    alias(tools.plugins.toolkit)
+    alias(toolkit.plugins.gradle.plugin)
 }
 
 val packageName: String by rootProject.extra
-val telegramJNIWrapperModule: String by rootProject.extra
+val telegramJNIWrapperModuleName: String by rootProject.extra
 
 android {
-    namespace = packageName.appendPackageName(telegramJNIWrapperModule.toPackageName())
+    namespace = packageName.appendPackageName(telegramJNIWrapperModuleName.toPackageName())
 
     compileSdk = config.versions.compile.sdk.value()
     ndkVersion = config.versions.ndk.value()
@@ -42,7 +42,7 @@ android {
 
     externalNativeBuild.cmake {
         version = cmakeVersion
-        path = project
+        path = rootProject
             .directories()
             .getTelegramLibraryModule()
             .resolve(SdkConstants.FD_JNI)
@@ -53,5 +53,5 @@ android {
 }
 
 dependencies {
-    implementation(tools.kotlin)
+    implementation(toolkit.kotlin.tools)
 }

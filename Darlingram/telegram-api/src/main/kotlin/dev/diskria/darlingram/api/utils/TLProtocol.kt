@@ -1,7 +1,6 @@
 package dev.diskria.darlingram.api.utils
 
 import dev.diskria.darlingram.api.models.common.TLConstructor
-import dev.diskria.darlingram.api.models.common.TLObject
 import dev.diskria.darlingram.api.models.common.TLPrimitive
 import dev.diskria.darlingram.api.models.extensions.decodeBytes
 import dev.diskria.darlingram.api.models.extensions.encodeBytes
@@ -32,19 +31,14 @@ import dev.diskria.darlingram.tools.kotlin.extensions.alignPadding
 import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
 import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedType
 import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedValue
+import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 abstract class TLProtocol {
 
-    abstract fun getLength(): Int
-
     abstract fun getPosition(): Int
 
-    abstract fun remaining(): Int
-
     abstract fun cleanup()
-
-    abstract fun toByteArray(): ByteArray
 
     abstract fun skip(length: Int)
 
@@ -63,6 +57,10 @@ abstract class TLProtocol {
     abstract fun writeBytes(value: TLByteArray, offset: Int = 0, length: Int = value.size)
 
     abstract fun readBytes(output: TLByteArray, offset: Int = 0, length: Int = output.size)
+
+    abstract fun writeBytes(byteBuffer: ByteBuffer)
+
+    abstract fun readBytes(dataSize: Int): ByteBuffer
 
     fun writeBoolean(value: TLBoolean) {
         writeInt(value.mapToInt().toTLInt())
@@ -114,7 +112,14 @@ abstract class TLProtocol {
     }
 
     fun readByteArray(defaultValue: TLByteArray? = null): TLByteArray =
-        readData { dataLength -> readData(dataLength, defaultValue) }
+        readData(defaultValue) { dataLength -> readData(dataLength, defaultValue) }
+
+    fun writeByteBuffer(byteBuffer: ByteBuffer) {
+        writeData(byteBuffer::limit) { writeBytes(byteBuffer) }
+    }
+
+    fun readByteBuffer(defaultValue: ByteBuffer? = null): ByteBuffer =
+        readData(defaultValue) { dataSize -> readBytes(dataSize) }
 
     fun writeData(dataSizeProvider: () -> Int, dataWriter: () -> Unit) {
         val dataSize = dataSizeProvider()
@@ -122,15 +127,6 @@ abstract class TLProtocol {
         dataWriter()
         writePadding(headerLength + dataSize)
     }
-
-    inline fun <T : TLObject> readData(defaultValue: T? = null, dataReader: (Int) -> T): T =
-        tryCatch(defaultValue) {
-            readHeader { headerLength, dataLength ->
-                val data = dataReader(dataLength)
-                skipPadding(headerLength, dataLength)
-                return data
-            }
-        } ?: error("Cannot read data")
 
     fun readData(length: Int, defaultValue: TLByteArray? = null) =
         ByteArray(length).toTLByteArray().apply {
@@ -172,6 +168,15 @@ abstract class TLProtocol {
         }
     }
 
+    private inline fun <T> readData(defaultValue: T? = null, dataReader: (Int) -> T): T =
+        tryCatch(defaultValue) {
+            readHeader { headerLength, dataLength ->
+                val data = dataReader(dataLength)
+                skipPadding(headerLength, dataLength)
+                return data
+            }
+        } ?: error("Cannot read data")
+
     private fun writeHeader(dataSize: Int): Int {
         val beforeReadPosition = getPosition()
         if (dataSize < LONG_LENGTH_PREFIX) {
@@ -188,7 +193,7 @@ abstract class TLProtocol {
         return afterReadPosition - beforeReadPosition
     }
 
-    inline fun <T> readHeader(callback: (headerLength: Int, dataLength: Int) -> T): T {
+    private inline fun <T> readHeader(callback: (headerLength: Int, dataLength: Int) -> T): T {
         val beforeReadPosition = getPosition()
         var dataLength = readByteAsInt().toRaw()
         if (dataLength >= LONG_LENGTH_PREFIX) {
@@ -209,7 +214,7 @@ abstract class TLProtocol {
         }
     }
 
-    fun skipPadding(headerLength: Int, dataLength: Int) {
+    private fun skipPadding(headerLength: Int, dataLength: Int) {
         skip(
             (headerLength + dataLength).alignPadding(PADDING_ALIGNMENT)
         )

@@ -1,0 +1,9 @@
+[versions]
+dev = "dev"
+indev = "indev"
+
+[plugins]
+gradle-plugin = { id = "gradle-plugin", version.ref = "indev" }
+
+[libraries]
+kotlin-tools = { group = "dev", name = "kotlin-tools", version.ref = "indev" }

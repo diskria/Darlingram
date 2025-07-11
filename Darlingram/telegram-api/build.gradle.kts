@@ -1,18 +1,18 @@
-import dev.diskria.darlingram.toolkit.extensions.value
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.value
 import dev.diskria.darlingram.tools.kotlin.extensions.appendPackageName
 import dev.diskria.darlingram.tools.kotlin.extensions.toPackageName
 
 plugins {
     alias(config.plugins.android.library)
     alias(config.plugins.kotlin.android)
-    alias(tools.plugins.toolkit)
+    alias(toolkit.plugins.gradle.plugin)
 }
 
 private val packageName: String by rootProject.extra
-private val telegramApiModule: String by rootProject.extra
+private val telegramApiModuleName: String by rootProject.extra
 
 android {
-    namespace = packageName.appendPackageName(telegramApiModule.toPackageName())
+    namespace = packageName.appendPackageName(telegramApiModuleName.toPackageName())
 
     compileSdk = config.versions.compile.sdk.value()
 
@@ -39,5 +39,5 @@ android {
 dependencies {
     coreLibraryDesugaring(config.desugaring)
 
-    implementation(tools.kotlin)
+    implementation(toolkit.kotlin.tools)
 }

@@ -7,12 +7,13 @@ import dev.diskria.darlingram.api.models.primitive.TLByte
 import dev.diskria.darlingram.api.models.primitive.TLByteArray
 import dev.diskria.darlingram.api.models.primitive.TLInt
 import dev.diskria.darlingram.api.models.primitive.TLLong
+import dev.diskria.darlingram.tools.kotlin.extensions.invalidValue
 import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
 import java.nio.ByteBuffer
 
 class TLByteBuffer(
     private var buffer: ByteBuffer,
-    private val address: Long,
+    private val nativeBufferPointer: Long,
 ) : TLProtocol(), AutoCloseable {
 
     private var isReused: Boolean = true
@@ -27,20 +28,15 @@ class TLByteBuffer(
         return this
     }
 
-    override fun getLength(): Int = getPosition()
-
-    override fun getPosition(): Int = buffer.position()
-
-    override fun remaining(): Int = buffer.remaining()
+    override fun getPosition(): Int =
+        buffer.position()
 
     override fun cleanup() {
         buffer.clear()
     }
 
-    override fun toByteArray(): ByteArray = buffer.array()
-
     override fun skip(length: Int) {
-        buffer.position(buffer.position() + length)
+        setPosition(getPosition() + length)
     }
 
     override fun writeByte(value: TLByte) {
@@ -70,21 +66,28 @@ class TLByteBuffer(
             buffer.getLong().toTLLong()
         } ?: error("Cannot read Long")
 
-    override fun writeBytes(
-        value: TLByteArray,
-        offset: Int,
-        length: Int,
-    ) {
+    override fun writeBytes(value: TLByteArray, offset: Int, length: Int) {
         buffer.put(value.toRaw(), offset, length)
     }
 
-    override fun readBytes(
-        output: TLByteArray,
-        offset: Int,
-        length: Int,
-    ) {
+    override fun readBytes(output: TLByteArray, offset: Int, length: Int) {
         buffer.get(output.toRaw(), offset, length)
     }
+
+    override fun writeBytes(byteBuffer: ByteBuffer) {
+        byteBuffer.rewind()
+        buffer.put(byteBuffer)
+    }
+
+    override fun readBytes(dataSize: Int): ByteBuffer =
+        newInstance(dataSize).let { newBuffer ->
+            val oldLimit = getLimit()
+            setLimit(getPosition() + dataSize)
+            newBuffer.writeBytes(buffer)
+            setLimit(oldLimit)
+            newBuffer.setPosition(0)
+            return newBuffer.buffer
+        }
 
     override fun close() {
         if (isReused) {
@@ -92,22 +95,32 @@ class TLByteBuffer(
         }
         isReused = true
         TLByteBufferFactory.recycle(this)
-        native_reuse(address)
+        native_reuse(nativeBufferPointer)
     }
 
+    private fun setPosition(position: Int) {
+        buffer.position(position)
+    }
+
+    private fun setLimit(limit: Int) {
+        buffer.limit(limit)
+    }
+
+    private fun getLimit(): Int =
+        buffer.limit()
+
     companion object {
-        fun newInstance(size: Int): TLByteBuffer {
-            require(size > 0) { error("Invalid TLByteBuffer size") }
-            val address = native_getFreeBuffer(size)
-            require(address > 0) { error("Invalid address") }
+        fun newInstance(dataSize: Int): TLByteBuffer {
+            require(dataSize > 0) { invalidValue(dataSize) }
+            val nativePointer = native_getFreeBuffer(dataSize)
+            require(nativePointer > 0) { invalidValue(nativePointer) }
             return TLByteBuffer(
-                native_getJavaByteBuffer(address).apply {
-                    position(0)
-                    limit(size)
-                    order(BYTE_ORDER)
-                },
-                address
-            )
+                native_getJavaByteBuffer(nativePointer).order(BYTE_ORDER),
+                nativePointer
+            ).apply {
+                setPosition(0)
+                setLimit(dataSize)
+            }
         }
 
         @JvmStatic

@@ -10,41 +10,29 @@ import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedOperation
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 
-class TLOutputStream(length: Int? = null) : TLProtocol() {
+class TLOutputStream private constructor(outputStream: ByteArrayOutputStream) : TLStream() {
 
-    private val stream: ByteArrayOutputStream =
-        length?.let { ByteArrayOutputStream(it) } ?: ByteArrayOutputStream()
-
-    private val buffer: DataOutputStream =
-        DataOutputStream(stream)
-
-    override fun getLength(): Int = stream.size()
-
-    override fun getPosition(): Int = 0
-
-    override fun remaining(): Int = Int.MAX_VALUE
+    private val dataOutput: DataOutputStream =
+        DataOutputStream(outputStream)
 
     override fun cleanup() {
-        stream.close()
-        buffer.close()
+        dataOutput.close()
     }
 
-    override fun toByteArray(): ByteArray = stream.toByteArray()
-
     override fun writeByte(value: TLByte) {
-        buffer.writeByte(value.toRaw().toInt())
+        dataOutput.writeByte(value.toRaw().toInt())
     }
 
     override fun writeInt(value: TLInt) {
-        encodeIntBytes(value.toRaw(), BYTE_ORDER, buffer::write)
+        encodeIntBytes(value.toRaw(), BYTE_ORDER, dataOutput::write)
     }
 
     override fun writeLong(value: TLLong) {
-        encodeLongBytes(value.toRaw(), BYTE_ORDER, buffer::write)
+        encodeLongBytes(value.toRaw(), BYTE_ORDER, dataOutput::write)
     }
 
     override fun writeBytes(value: TLByteArray, offset: Int, length: Int) {
-        buffer.write(value.toRaw(), offset, length)
+        dataOutput.write(value.toRaw(), offset, length)
     }
 
     override fun skip(length: Int) = unsupportedOperation()
@@ -56,4 +44,12 @@ class TLOutputStream(length: Int? = null) : TLProtocol() {
     override fun readLong(defaultValue: TLLong?): TLLong = unsupportedOperation()
 
     override fun readBytes(output: TLByteArray, offset: Int, length: Int) = unsupportedOperation()
+
+    companion object {
+        fun newInstance(length: Int? = null): TLOutputStream =
+            TLOutputStream(
+                if (length != null) ByteArrayOutputStream(length)
+                else ByteArrayOutputStream()
+            )
+    }
 }

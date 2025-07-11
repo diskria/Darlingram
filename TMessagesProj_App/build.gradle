@@ -1,16 +1,12 @@
 // forky start
-import dev.diskria.darlingram.toolkit.extensions.ProjectExtKt
-import dev.diskria.darlingram.toolkit.plugin.tasks.CleanCMakeCacheTask
-import dev.diskria.darlingram.toolkit.plugin.tasks.ExportAPKTask
-import dev.diskria.darlingram.toolkit.plugin.tasks.GradleToolkitTaskKt
-import kotlin.jvm.JvmClassMappingKt
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.ProjectExtKt
 // forky end
 // forky commented apply plugin: 'com.android.application'
 
 // forky start
 plugins {
     alias(config.plugins.android.app)
-    alias(tools.plugins.toolkit)
+    alias(toolkit.plugins.gradle.plugin)
 }
 // forky end
 /* forky commented
@@ -30,10 +26,10 @@ configurations./* forky commented all */ /* forky start */ configureEach /* fork
 }
 
 dependencies {
-    implementation project(':TMessagesProj')
+    implementation project(/* forky commented ':TMessagesProj' */ /* forky start */ projectSeparator + telegramLibraryModuleName /* forky end */)
     implementation 'androidx.multidex:multidex:2.0.1'
     // forky commented coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-    coreLibraryDesugaring(libs.desugar) // forky
+    coreLibraryDesugaring(ProjectExtKt.getCatalogLibrary(rootProject, "config", "desugaring")) // forky
     implementation files('../TMessagesProj/libs/libgsaverification-client.aar')
 }
 
@@ -44,9 +40,9 @@ android {
     */
     compileSdk = config.versions.compile.sdk.get().toInteger() // forky
 
-    defaultConfig.applicationId = APP_PACKAGE
+    defaultConfig.applicationId = /* forky commented APP_PACKAGE */ /* forky start */ telegramPackageName /* forky end */
 
-    // forky commented sourceSets.main.jniLibs.srcDirs = ['../TMessagesProj/jni/']
+    sourceSets.main.jniLibs.srcDirs = ['../TMessagesProj/jni/']
 
     /* forky commented lintOptions */ /* forky start */ lint /* forky end */ {
         disable 'MissingTranslation'
@@ -283,15 +279,3 @@ android {
 }
 
 // forky commented apply plugin: 'com.google.gms.google-services'
-// forky start
-tasks.matching { it.name.startsWith("assemble") }.configureEach {
-    finalizedBy tasks.named(GradleToolkitTaskKt.getDisplayName(JvmClassMappingKt.getKotlinClass(
-            ExportAPKTask.class
-    )))
-}
-tasks.named("clean") {
-    finalizedBy tasks.named(GradleToolkitTaskKt.getDisplayName(JvmClassMappingKt.getKotlinClass(
-            CleanCMakeCacheTask.class
-    )))
-}
-// forky end

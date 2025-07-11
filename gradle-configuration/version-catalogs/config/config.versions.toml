@@ -1,6 +1,6 @@
 [versions]
-agp = "8.11.0"
-kotlin = "2.0.21"
+agp = "8.11.1"
+kotlin = "2.2.0"
 java = "21"
 cmake = "3.10.2"
 desugaring = "2.1.5"

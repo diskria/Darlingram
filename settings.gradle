@@ -1,9 +1,18 @@
+/* forky commented
+include ':TMessagesProj'
+include ':TMessagesProj_App'
+include ':TMessagesProj_AppHuawei'
+include ':TMessagesProj_AppHockeyApp'
+include ':TMessagesProj_AppStandalone'
+*/
 // forky start
+File.metaClass.resolve = { String path -> new File(delegate, path) }
+
 private File getGradleSettingsRelativePath() {
     String gradleSettingsFile = "gradle-configuration/settings/main.gradle.kts"
-    File currentDirectory = rootProject.getProjectDir()
+    File currentDirectory = rootDir
     while (currentDirectory != null) {
-        File candidate = new File(currentDirectory, gradleSettingsFile)
+        File candidate = currentDirectory.resolve(gradleSettingsFile)
         if (candidate.isFile()) {
             return candidate
         }
@@ -11,15 +20,19 @@ private File getGradleSettingsRelativePath() {
     }
     throw new GradleException("Gradle configuration not found")
 }
+
 apply from: getGradleSettingsRelativePath()
 
 rootProject.name = telegramName
-includeBuild(projectName + File.separator + toolkitModule)
+
+includeBuild(rootDir.resolve(toolkitName).resolve(pluginsDirectory).resolve(gradlePluginModuleName))
+
+def telegramApplicationProject = projectSeparator + telegramApplicationModuleName
+def telegramLibraryProject = projectSeparator + telegramLibraryModuleName
+
+include(telegramApplicationProject)
+project(telegramApplicationProject).projectDir = file("TMessagesProj_App")
+
+include(telegramLibraryProject)
+project(telegramLibraryProject).projectDir = file("TMessagesProj")
 // forky end
-include ':TMessagesProj'
-include ':TMessagesProj_App'
-/* forky commented
-include ':TMessagesProj_AppHuawei'
-include ':TMessagesProj_AppHockeyApp'
-include ':TMessagesProj_AppStandalone'
-*/
