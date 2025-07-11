@@ -1,9 +1,8 @@
 package dev.diskria.darlingram.toolkit.tasks.gradle
 
-import dev.diskria.darlingram.toolkit.ProjectDirectories
-import dev.diskria.darlingram.toolkit.platforms.TelegramClientPlatformType
-import dev.diskria.darlingram.toolkit.platforms.TelegramClientVersionExtractor
-import dev.diskria.darlingram.toolkit.utils.gradle.extensions.directories
+import dev.diskria.darlingram.toolkit.submodules.PlatformType
+import dev.diskria.darlingram.toolkit.submodules.TelegramClients
+import dev.diskria.darlingram.toolkit.utils.ProjectDirectories
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.getDisplayName
 
 @Suppress("unused")
@@ -11,18 +10,16 @@ abstract class ForkyCheckTask : GradleToolkitTask(
     "Forky!",
 ) {
     override fun runTask(directories: ProjectDirectories) {
-        val directories = directories()
-
         val forkRoot = directories.getForkRoot()
-        val forkVersion = TelegramClientVersionExtractor.extract(
-            directories,
-            TelegramClientPlatformType.MAIN_PLATFORM,
+        val forkVersion = TelegramClients.extractClientVersion(
+            this,
+            PlatformType.MAIN_PLATFORM,
             forkRoot
         )
         val upstreamRoot = directories.getUpstreamRoot()
-        val upstreamVersion = TelegramClientVersionExtractor.extract(
-            directories,
-            TelegramClientPlatformType.MAIN_PLATFORM,
+        val upstreamVersion = TelegramClients.extractClientVersion(
+            this,
+            PlatformType.MAIN_PLATFORM,
             upstreamRoot
         )
         require(forkVersion == upstreamVersion) {
@@ -58,7 +55,7 @@ abstract class ForkyCheckTask : GradleToolkitTask(
            - Record the line and column number of the mismatch.
            - Skip further validation for this file and mark it as problematic.
 
-        5. At the end of the process, report all collected errors along with references to the problematic code.
+        5. At the end of the process, report all errors along with links to the problematic code.
 
         6. Implement support for ignored files:
            - Maintain a collection of file paths that should be excluded from comparison.

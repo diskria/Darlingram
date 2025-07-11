@@ -1,6 +1,6 @@
 package dev.diskria.darlingram.toolkit.utils.gradle.extensions
 
-import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedType
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.unsupportedType
 import org.gradle.api.provider.Provider
 
 inline fun <reified T> Provider<String>.value(): T {

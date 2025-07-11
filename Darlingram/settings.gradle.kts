@@ -1,7 +1,7 @@
 private val gradleSettingsFile = "gradle-configuration/settings/main.gradle.kts"
 
 private fun getGradleSettingsRelativePath(): File =
-    generateSequence(rootProject.projectDir) { it.parentFile }
+    generateSequence(rootDir) { it.parentFile }
         .map { it.resolve(gradleSettingsFile) }
         .firstOrNull(File::isFile)
         ?: error("Gradle configuration not found")
@@ -20,7 +20,7 @@ private val telegramName: String by extra
 
 private val toolkitName: String by extra
 private val pluginsDirectory: String by extra
-private val toolsDirectory: String by extra
+private val utilsDirectory: String by extra
 
 private fun String.getProjectName(): String =
     split(projectSeparator)
@@ -69,7 +69,7 @@ private fun includeTelegram() {
 
 private fun includeToolkit() {
     listOf(
-        toolsDirectory,
+        utilsDirectory,
         pluginsDirectory
     ).forEach { directory ->
         rootDir

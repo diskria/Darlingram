@@ -35,8 +35,8 @@ val telegramDefaultAppIconComponentName = "DefaultIcon"
 
 val toolkitName = "Toolkit"
 val pluginsDirectory = "plugins"
-val toolsDirectory = "tools"
-val kotlinToolsModuleName = "kotlin-tools"
+val utilsDirectory = "utils"
+val kotlinUtilsModuleName = "kotlin-utils"
 val gradlePluginModuleName = "gradle-plugin"
 
 putMetadata("projectSeparator", projectSeparator)
@@ -63,6 +63,6 @@ putMetadata("telegramDefaultAppIconComponentName", telegramDefaultAppIconCompone
 
 putMetadata("toolkitName", toolkitName)
 putMetadata("pluginsDirectory", pluginsDirectory)
-putMetadata("toolsDirectory", toolsDirectory)
-putMetadata("kotlinToolsModuleName", kotlinToolsModuleName)
+putMetadata("utilsDirectory", utilsDirectory)
+putMetadata("kotlinUtilsModuleName", kotlinUtilsModuleName)
 putMetadata("gradlePluginModuleName", gradlePluginModuleName)

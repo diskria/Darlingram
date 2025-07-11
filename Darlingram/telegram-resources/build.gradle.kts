@@ -1,12 +1,12 @@
 import com.android.SdkConstants
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.directories
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.value
-import dev.diskria.darlingram.tools.kotlin.extensions.appendPackageName
-import dev.diskria.darlingram.tools.kotlin.extensions.toPackageName
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.appendPackageName
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.toPackageName
 
 plugins {
     alias(config.plugins.android.library)
-    alias(toolkit.plugins.gradle.plugin)
+    alias(toolkit.plugins.gradle)
 }
 
 val packageName: String by rootProject.extra
@@ -22,7 +22,7 @@ android {
     }
 
     sourceSets[SdkConstants.FD_MAIN].apply {
-        rootProject
+        project
             .directories()
             .getTelegramLibraryModule()
             .resolve(SdkConstants.FD_SOURCES)

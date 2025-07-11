@@ -7,8 +7,8 @@ import dev.diskria.darlingram.api.models.primitive.TLByte
 import dev.diskria.darlingram.api.models.primitive.TLByteArray
 import dev.diskria.darlingram.api.models.primitive.TLInt
 import dev.diskria.darlingram.api.models.primitive.TLLong
-import dev.diskria.darlingram.tools.kotlin.extensions.invalidValue
-import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.invalidValue
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.tryCatch
 import java.nio.ByteBuffer
 
 class TLByteBuffer(

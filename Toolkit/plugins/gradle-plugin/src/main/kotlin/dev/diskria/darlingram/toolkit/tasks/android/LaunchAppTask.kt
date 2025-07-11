@@ -1,18 +1,20 @@
 package dev.diskria.darlingram.toolkit.tasks.android
 
 import dev.diskria.darlingram.Metadata
-import dev.diskria.darlingram.toolkit.ProjectDirectories
+import dev.diskria.darlingram.toolkit.utils.ProjectDirectories
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.getAndroidSdkShell
-import dev.diskria.darlingram.tools.kotlin.extensions.findLastModifiedFile
-import dev.diskria.darlingram.tools.kotlin.utils.Constants
-import dev.diskria.darlingram.tools.kotlin.utils.ShellUtils
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.getBuildDirectory
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.findLastModifiedFile
+import dev.diskria.darlingram.toolkit.utils.kotlin.utils.Constants
+import dev.diskria.darlingram.toolkit.utils.kotlin.utils.Shell
+import java.io.File
 
 @Suppress("unused")
 abstract class LaunchAppTask : AndroidToolkitTask(
     "Launch app"
 ) {
     override fun runTask(directories: ProjectDirectories) {
-        val apkFile = buildDirectory.findLastModifiedFile(Constants.File.Extension.APK)
+        val apkFile = project.getBuildDirectory().findLastModifiedFile(Constants.File.Extension.APK)
             ?: error("APK not found")
 
         val androidSdkManager = project.getAndroidSdkShell() ?: error("Not android gradle module")
@@ -23,14 +25,14 @@ abstract class LaunchAppTask : AndroidToolkitTask(
         val deviceIds = androidSdkManager.getConnectedDevices()
         require(deviceIds.isNotEmpty()) { "No connected devices" }
 
-        val apkBuildId = ShellUtils.readFileFromZip(apkFile, GenerateBuildUuidTask.ASSETS_FILE_PATH)
+        val apkBuildId = readFileFromZip(apkFile, GenerateBuildUuidTask.ASSETS_FILE_PATH)
 
         deviceIds.forEach { deviceId ->
             val deviceShell = androidSdkManager.getDeviceShell(deviceId)
             deviceShell.activityManager.forceStop(apkApplicationId)
             val deviceApkPath = deviceShell.packageManager.getApkPath(apkApplicationId)
             val deviceApkBuildId = deviceShell.runAndGetOutput(
-                ShellUtils.getReadFileFromZipCommand(
+                getReadFileFromZipCommand(
                     deviceApkPath,
                     GenerateBuildUuidTask.ASSETS_FILE_PATH
                 )
@@ -48,4 +50,13 @@ abstract class LaunchAppTask : AndroidToolkitTask(
             }
         }
     }
+
+    fun readFileFromZip(zipFile: File, internalPath: String): String =
+        Shell.open().runAndGetOutput(
+            getReadFileFromZipCommand(zipFile.absolutePath, internalPath)
+        )
+
+    fun getReadFileFromZipCommand(zipFilePath: String, internalPath: String): String =
+        "unzip -p $zipFilePath $internalPath"
+
 }

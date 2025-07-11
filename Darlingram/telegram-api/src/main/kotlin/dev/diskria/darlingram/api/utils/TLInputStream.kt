@@ -9,8 +9,8 @@ import dev.diskria.darlingram.api.models.primitive.TLByte
 import dev.diskria.darlingram.api.models.primitive.TLByteArray
 import dev.diskria.darlingram.api.models.primitive.TLInt
 import dev.diskria.darlingram.api.models.primitive.TLLong
-import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
-import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedOperation
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.tryCatch
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.unsupportedOperation
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.io.File

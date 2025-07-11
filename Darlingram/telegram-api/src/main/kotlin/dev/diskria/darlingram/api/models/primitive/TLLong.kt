@@ -6,8 +6,8 @@ import dev.diskria.darlingram.api.models.extensions.mapToInt
 import dev.diskria.darlingram.api.models.extensions.toTLConstructor
 import dev.diskria.darlingram.api.models.extensions.toTLLong
 import dev.diskria.darlingram.api.utils.TLProtocol
-import dev.diskria.darlingram.tools.kotlin.extensions.packIntsToLong
-import dev.diskria.darlingram.tools.kotlin.extensions.unpackHighInt
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.packIntsToLong
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.unpackHighInt
 
 @JvmInline
 value class TLLong(private val value: Long) : TLPrimitive<Long> {

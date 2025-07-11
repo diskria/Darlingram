@@ -1,6 +1,6 @@
 package dev.diskria.darlingram.api.utils
 
-import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedOperation
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.unsupportedOperation
 import java.nio.ByteBuffer
 
 abstract class TLStream : TLProtocol() {

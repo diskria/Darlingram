@@ -1,11 +1,11 @@
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.value
-import dev.diskria.darlingram.tools.kotlin.extensions.appendPackageName
-import dev.diskria.darlingram.tools.kotlin.extensions.toPackageName
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.appendPackageName
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.toPackageName
 
 plugins {
     alias(config.plugins.android.library)
     alias(config.plugins.kotlin.android)
-    alias(toolkit.plugins.gradle.plugin)
+    alias(toolkit.plugins.gradle)
 }
 
 private val packageName: String by rootProject.extra
@@ -39,5 +39,5 @@ android {
 dependencies {
     coreLibraryDesugaring(config.desugaring)
 
-    implementation(toolkit.kotlin.tools)
+    implementation(toolkit.kotlin.utils)
 }

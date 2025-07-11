@@ -1,9 +1,8 @@
 package dev.diskria.darlingram.toolkit.tasks.android
 
-import dev.diskria.darlingram.toolkit.ProjectDirectories
-import dev.diskria.darlingram.toolkit.utils.gradle.extensions.directories
+import dev.diskria.darlingram.toolkit.utils.ProjectDirectories
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.isTelegram
-import dev.diskria.darlingram.tools.kotlin.extensions.generateUuid
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.generateUuid
 
 @Suppress("unused")
 abstract class GenerateBuildUuidTask : AndroidToolkitTask(
@@ -11,8 +10,8 @@ abstract class GenerateBuildUuidTask : AndroidToolkitTask(
 ) {
     override fun runTask(directories: ProjectDirectories) {
         val assetsModule = when {
-            project.isTelegram() -> directories().getTelegramLibraryModule()
-            else -> directories().getApplicationModule()
+            project.isTelegram() -> directories.getTelegramLibraryModule()
+            else -> directories.getApplicationModule()
         }
         with(assetsModule.resolve("src/main/" + ASSETS_FILE_PATH)) {
             parentFile.mkdirs()

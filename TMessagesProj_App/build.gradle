@@ -1,4 +1,6 @@
 // forky start
+
+import dev.diskria.darlingram.toolkit.utils.PropertyNames
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.ProjectExtKt
 // forky end
 // forky commented apply plugin: 'com.android.application'
@@ -6,7 +8,7 @@ import dev.diskria.darlingram.toolkit.utils.gradle.extensions.ProjectExtKt
 // forky start
 plugins {
     alias(config.plugins.android.app)
-    alias(toolkit.plugins.gradle.plugin)
+    alias(toolkit.plugins.gradle)
 }
 // forky end
 /* forky commented
@@ -29,7 +31,7 @@ dependencies {
     implementation project(/* forky commented ':TMessagesProj' */ /* forky start */ projectSeparator + telegramLibraryModuleName /* forky end */)
     implementation 'androidx.multidex:multidex:2.0.1'
     // forky commented coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-    coreLibraryDesugaring(ProjectExtKt.getCatalogLibrary(rootProject, "config", "desugaring")) // forky
+    coreLibraryDesugaring(ProjectExtKt.getCatalogLibrary(project, "config", "desugaring")) // forky
     implementation files('../TMessagesProj/libs/libgsaverification-client.aar')
 }
 
@@ -138,7 +140,7 @@ android {
 
     sourceSets.debug {
         // forky commented manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest.xml'
-        manifest.srcFile ProjectExtKt.directories(project).getTelegramAndroidManifestMinSDK23() // forky
+        manifest.srcFile ProjectExtKt.directories(project).getTelegramAndroidManifestSDK23() // forky
     }
 
     /* forky commented
@@ -185,7 +187,7 @@ android {
             ndk {
                 // forky commented abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
                 // forky start
-                def abiFiltersList = ProjectExtKt.getLocalProperty(rootProject, "ABI_FILTERS")
+                def abiFiltersList = ProjectExtKt.getLocalProperty(project, PropertyNames.ABI_FILTERS)
                 if (abiFiltersList == null) {
                     abiFiltersList = config.versions.default.abis.get()
                 }
@@ -256,7 +258,7 @@ android {
                 // forky commented arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-16'
                 // forky start
                 arguments config.versions.args.cmake.get()
-                def abiFiltersList = ProjectExtKt.getLocalProperty(rootProject, "ABI_FILTERS")
+                def abiFiltersList = ProjectExtKt.getLocalProperty(project, PropertyNames.ABI_FILTERS)
                 if (abiFiltersList == null) {
                     abiFiltersList = config.versions.default.abis.get()
                 }

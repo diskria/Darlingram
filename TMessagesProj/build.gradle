@@ -1,7 +1,8 @@
 // forky start
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.ProjectExtKt
-import dev.diskria.darlingram.tools.kotlin.extensions.StringExtKt
-import dev.diskria.darlingram.tools.kotlin.utils.Constants
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.StringExtKt
+import dev.diskria.darlingram.toolkit.utils.kotlin.utils.Constants
+import dev.diskria.darlingram.toolkit.utils.PropertyNames
 // forky end
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
@@ -9,7 +10,7 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 // forky start
 plugins {
     alias(config.plugins.android.library)
-    alias(toolkit.plugins.gradle.plugin)
+    alias(toolkit.plugins.gradle)
 }
 // forky end
 
@@ -83,7 +84,7 @@ dependencies {
     implementation 'com.google.android.recaptcha:recaptcha:18.4.0'
 
     // forky commented coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-    coreLibraryDesugaring(ProjectExtKt.getCatalogLibrary(rootProject, "config", "desugaring")) // forky
+    coreLibraryDesugaring(ProjectExtKt.getCatalogLibrary(project, "config", "desugaring")) // forky
 }
 
 def isWindows = String.valueOf(DefaultNativePlatform.currentOperatingSystem.toFamilyName() == OperatingSystemFamily.WINDOWS)
@@ -157,7 +158,7 @@ android {
                 // forky commented arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-16'
                 // forky start
                 arguments config.versions.args.cmake.get()
-                def abiFiltersList = ProjectExtKt.getLocalProperty(rootProject, "ABI_FILTERS")
+                def abiFiltersList = ProjectExtKt.getLocalProperty(project, PropertyNames.ABI_FILTERS)
                 if (abiFiltersList == null) {
                     abiFiltersList = config.versions.default.abis.get()
                 }
@@ -186,14 +187,29 @@ android {
             buildConfigField "boolean", "DEBUG_PRIVATE_VERSION", /* forky commented "true" */ /* forky start */ "false" /* forky end */
             buildConfigField "boolean", "BUILD_HOST_IS_WINDOWS", isWindows
             // forky start
-            buildConfigField "String", "APPLICATION_ID", StringExtKt.wrapWithDoubleQuote(telegramPackageName)
-            def apiId = ProjectExtKt.getLocalProperty(rootProject, "API_ID")
-            def apiHash = ProjectExtKt.getLocalProperty(rootProject, "API_HASH")
+            buildConfigField(
+                    "String",
+                    PropertyNames.APPLICATION_ID,
+                    StringExtKt.wrapWithDoubleQuote(telegramPackageName)
+            )
+            def apiId = ProjectExtKt.getLocalProperty(project, PropertyNames.API_ID)
+            def apiHash = ProjectExtKt.getLocalProperty(project, PropertyNames.API_HASH)
             if (apiId == null || apiHash == null) {
-                throw new GradleException("Missing API_ID and/or API_HASH in local.properties!")
+                throw new GradleException(
+                        "Missing ${PropertyNames.API_ID} and/or ${PropertyNames.API_HASH} " +
+                                "in local.properties!"
+                )
             }
-            buildConfigField "int", "API_ID", apiId
-            buildConfigField "String", "API_HASH", StringExtKt.wrapWithDoubleQuote(apiHash)
+            buildConfigField(
+                    int.class.name,
+                    PropertyNames.API_ID,
+                    apiId
+            )
+            buildConfigField(
+                    String.class.name,
+                    PropertyNames.API_HASH,
+                    StringExtKt.wrapWithDoubleQuote(apiHash)
+            )
             // forky end
         }
 

@@ -3,7 +3,7 @@ import dev.diskria.darlingram.toolkit.utils.gradle.extensions.value
 plugins {
     alias(config.plugins.android.app)
     alias(config.plugins.kotlin.android)
-    alias(toolkit.plugins.gradle.plugin)
+    alias(toolkit.plugins.gradle)
 }
 
 private val projectSeparator: String by rootProject.extra
@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
 
-    implementation(toolkit.kotlin.tools)
+    implementation(toolkit.kotlin.utils)
 
     listOf(
         telegramApiModuleName,

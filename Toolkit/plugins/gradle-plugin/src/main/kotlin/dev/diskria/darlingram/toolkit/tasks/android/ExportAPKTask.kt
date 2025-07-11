@@ -1,17 +1,18 @@
 package dev.diskria.darlingram.toolkit.tasks.android
 
 import dev.diskria.darlingram.Metadata
-import dev.diskria.darlingram.toolkit.ProjectDirectories
+import dev.diskria.darlingram.toolkit.utils.ProjectDirectories
+import dev.diskria.darlingram.toolkit.utils.PropertyNames
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.getAndroidSdkShell
-import dev.diskria.darlingram.toolkit.utils.gradle.extensions.directories
+import dev.diskria.darlingram.toolkit.utils.gradle.extensions.getBuildDirectory
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.getLocalProperty
 import dev.diskria.darlingram.toolkit.utils.gradle.extensions.isTelegram
-import dev.diskria.darlingram.tools.kotlin.extensions.fileName
-import dev.diskria.darlingram.tools.kotlin.extensions.findLastModifiedFile
-import dev.diskria.darlingram.tools.kotlin.extensions.format
-import dev.diskria.darlingram.tools.kotlin.extensions.takeIfExceeds
-import dev.diskria.darlingram.tools.kotlin.utils.Constants
-import dev.diskria.darlingram.tools.kotlin.utils.DateFormat
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.fileName
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.findLastModifiedFile
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.format
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.takeIfExceeds
+import dev.diskria.darlingram.toolkit.utils.kotlin.utils.Constants
+import dev.diskria.darlingram.toolkit.utils.kotlin.utils.DateFormat
 import java.util.Date
 
 @Suppress("unused")
@@ -19,7 +20,7 @@ abstract class ExportAPKTask : AndroidToolkitTask(
     "Copies the latest built APK into the repo root",
 ) {
     override fun runTask(directories: ProjectDirectories) {
-        val apkFile = buildDirectory.findLastModifiedFile(Constants.File.Extension.APK)
+        val apkFile = project.getBuildDirectory().findLastModifiedFile(Constants.File.Extension.APK)
             ?: error("APK not found")
 
         val androidSdkShell = project.getAndroidSdkShell() ?: error("Not android gradle module")
@@ -41,11 +42,11 @@ abstract class ExportAPKTask : AndroidToolkitTask(
             ).joinToString(Constants.Symbol.UNDERSCORE),
             Constants.File.Extension.APK
         )
-        val outputDirectory = directories().getAPK(project.isTelegram())
+        val outputDirectory = directories.getExtractedAPKs(project.isTelegram())
         outputDirectory.mkdirs()
 
         val filesLimit = project
-            .getLocalProperty("APK_FILES_LIMIT")
+            .getLocalProperty(PropertyNames.APK_FILES_LIMIT)
             ?.toInt()
             ?: DEFAULT_FILES_LIMIT
         apkFile.copyTo(outputDirectory.resolve(apkFileName), overwrite = true)

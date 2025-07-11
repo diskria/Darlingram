@@ -27,10 +27,10 @@ import dev.diskria.darlingram.api.models.primitive.TLFloat
 import dev.diskria.darlingram.api.models.primitive.TLInt
 import dev.diskria.darlingram.api.models.primitive.TLLong
 import dev.diskria.darlingram.api.models.primitive.TLString
-import dev.diskria.darlingram.tools.kotlin.extensions.alignPadding
-import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
-import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedType
-import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedValue
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.alignPadding
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.tryCatch
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.unsupportedType
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.unsupportedValue
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

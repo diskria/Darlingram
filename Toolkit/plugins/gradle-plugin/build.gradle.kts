@@ -19,7 +19,7 @@ gradlePlugin {
             implementationClass = listOf(
                 packageName,
                 toolkitName.lowercase(Locale.ROOT),
-                "GradleToolkitPlugin"
+                "ToolkitPlugin"
             ).joinToString(packageSeparator)
         }
     }
@@ -31,8 +31,8 @@ dependencies {
     implementation(libs.kotlinpoet)
     implementation(libs.kotlin.serialization)
     implementation(libs.okhttp)
-    
-    implementation(toolkit.kotlin.tools)
+
+    implementation(toolkit.kotlin.utils)
 
     compileOnly(config.android.tools)
 
@@ -48,5 +48,5 @@ java {
 }
 
 kotlin {
-    jvmToolchain(javaVersion)
+    jvmToolchain(config.versions.java.get().toInt())
 }

@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":Toolkit-Kotlin-Tools:generateMetadata" />
+          <option value=":Toolkit-Kotlin-Utils:generateMetadata" />
         </list>
       </option>
       <option name="vmOptions" />

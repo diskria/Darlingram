@@ -5,7 +5,7 @@ import dev.diskria.darlingram.api.models.extensions.toTLConstructor
 import dev.diskria.darlingram.api.models.extensions.toTLInt
 import dev.diskria.darlingram.api.models.primitive.TLInt
 import dev.diskria.darlingram.api.utils.TLProtocol
-import dev.diskria.darlingram.tools.kotlin.extensions.tryCatch
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.tryCatch
 
 @JvmInline
 value class TLArray<T : TLObject>(val list: List<T>) : TLObject {

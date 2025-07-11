@@ -12,8 +12,8 @@ import dev.diskria.darlingram.api.models.primitive.TLFloat
 import dev.diskria.darlingram.api.models.primitive.TLInt
 import dev.diskria.darlingram.api.models.primitive.TLLong
 import dev.diskria.darlingram.api.models.primitive.TLString
-import dev.diskria.darlingram.tools.kotlin.extensions.downUntil
-import dev.diskria.darlingram.tools.kotlin.extensions.unsupportedValue
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.downUntil
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.unsupportedValue
 import java.nio.ByteOrder
 
 fun Int.toTLConstructor(): TLConstructor = TLConstructor(this)

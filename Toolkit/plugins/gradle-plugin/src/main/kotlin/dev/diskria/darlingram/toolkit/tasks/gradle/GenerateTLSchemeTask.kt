@@ -4,8 +4,8 @@ import com.palantir.javapoet.FieldSpec
 import com.palantir.javapoet.JavaFile
 import com.palantir.javapoet.TypeSpec
 import dev.diskria.darlingram.Metadata
-import dev.diskria.darlingram.toolkit.ProjectDirectories
-import dev.diskria.darlingram.tools.kotlin.extensions.readByLines
+import dev.diskria.darlingram.toolkit.utils.ProjectDirectories
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.readByLines
 import java.io.File
 import javax.lang.model.element.Modifier
 

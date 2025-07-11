@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":Toolkit-Kotlin-Tools:publishToMavenLocal" />
+          <option value=":Toolkit-Kotlin-Utils:publishToMavenLocal" />
         </list>
       </option>
       <option name="vmOptions" />

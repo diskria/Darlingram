@@ -3,7 +3,7 @@ package dev.diskria.darlingram.api.utils
 import dev.diskria.darlingram.api.utils.TLByteBuffer.Companion.native_getJavaByteBuffer
 import dev.diskria.darlingram.api.utils.TLByteBuffer.Companion.native_limit
 import dev.diskria.darlingram.api.utils.TLByteBuffer.Companion.native_position
-import dev.diskria.darlingram.tools.kotlin.extensions.invalidValue
+import dev.diskria.darlingram.toolkit.utils.kotlin.extensions.invalidValue
 import java.util.LinkedList
 
 object TLByteBufferFactory {
