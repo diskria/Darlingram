@@ -20,10 +20,8 @@ abstract class GenerateSubmodulesTask : GradleToolkitTask(
 
     private fun generateGitmodulesConfig(directories: ProjectDirectories, forkRoot: File): String =
         PlatformType.values().joinToString(Constants.Symbol.NEW_LINE) { platform ->
-            val relativePath = directories.getTelegramClientSubmodule(platform)
-                .relativeTo(forkRoot)
-                .absolutePath
-            Templates.buildSubmodule(relativePath, platform.getRepositoryUrl())
+            val relativePath = directories.getTelegramClientSubmodule(platform).relativeTo(forkRoot)
+            Templates.buildSubmodule(relativePath.toString(), platform.getRepositoryUrl())
         }
 
     private fun initializeGitSubmodules(forkRoot: File) {
