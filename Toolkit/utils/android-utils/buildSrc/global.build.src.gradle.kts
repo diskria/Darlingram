@@ -1,0 +1,1 @@
+../../../../gradle-configuration/global-settings/global.build.src.gradle.kts

@@ -1,4 +1,4 @@
-package dev.diskria.darlingram.tools.gradle
+package dev.diskria.darlingram.toolkit.utils.gradle
 
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier

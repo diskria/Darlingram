@@ -4,7 +4,7 @@ file(".")
     .listFiles { file ->
         file.isFile &&
                 file.name.endsWith(GRADLE_KTS_EXTENSION) &&
-                file.name != "main" + GRADLE_KTS_EXTENSION
+                file.name != "main.settings" + GRADLE_KTS_EXTENSION
     }
     ?.forEach { gradleSettings ->
         apply(from = gradleSettings)

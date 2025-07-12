@@ -6,22 +6,9 @@ include ':TMessagesProj_AppHockeyApp'
 include ':TMessagesProj_AppStandalone'
 */
 // forky start
+apply from: "global.settings.gradle.kts"
+
 File.metaClass.resolve = { String path -> new File(delegate, path) }
-
-private File getGradleSettingsRelativePath() {
-    String gradleSettingsFile = "gradle-configuration/settings/main.gradle.kts"
-    File currentDirectory = rootDir
-    while (currentDirectory != null) {
-        File candidate = currentDirectory.resolve(gradleSettingsFile)
-        if (candidate.isFile()) {
-            return candidate
-        }
-        currentDirectory = currentDirectory.parentFile
-    }
-    throw new GradleException("Gradle configuration not found")
-}
-
-apply from: getGradleSettingsRelativePath()
 
 rootProject.name = telegramName
 

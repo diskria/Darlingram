@@ -23,7 +23,7 @@ fun String.equalsIgnoreCase(other: String?): Boolean =
     equals(other, ignoreCase = true)
 
 fun String.toChar(): Char? =
-    firstOrNull()
+    singleOrNull()
 
 fun String.toCharOrThrow(): Char =
     toChar() ?: error("Cannot convert string ${this.wrapWithDoubleQuote()} to a single character")
@@ -31,9 +31,9 @@ fun String.toCharOrThrow(): Char =
 fun String.splitByComma(): List<String> = split(Constants.Symbol.COMMA)
 
 fun String.invertCase(): String =
-    map {
-        if (it.isLowerCase()) it.uppercaseChar()
-        else it.lowercaseChar()
+    map { char ->
+        if (char.isLowerCase()) char.uppercaseChar()
+        else char.lowercaseChar()
     }.joinToString(Constants.Symbol.EMPTY)
 
 fun String.wrap(char: Char): String =

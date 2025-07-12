@@ -1,0 +1,1 @@
+../gradle-configuration/global-settings/global.settings.gradle.kts

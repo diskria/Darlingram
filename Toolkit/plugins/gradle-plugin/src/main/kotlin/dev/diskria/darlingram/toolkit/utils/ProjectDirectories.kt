@@ -44,7 +44,6 @@ class ProjectDirectories(private val projectRoot: File) {
             .resolve("build")
             .resolve("generated")
             .resolve("java")
-            .asFileOrThrow()
 
     fun getTelegramApplicationModule(): File =
         forkRoot
@@ -73,7 +72,6 @@ class ProjectDirectories(private val projectRoot: File) {
                 if (isTelegram) Metadata.TELEGRAM_NAME
                 else Metadata.PROJECT_NAME
             )
-            .asDirectoryOrThrow()
 
     fun getTelegramApiScheme(): File =
         getTelegramClientSubmodule(PlatformType.DESKTOP)

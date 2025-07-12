@@ -39,14 +39,6 @@ dependencies {
     implementation(gradleApi())
 }
 
-val javaVersion: Int = config.versions.java.get().toInt()
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion))
-    }
-}
-
 kotlin {
     jvmToolchain(config.versions.java.get().toInt())
 }

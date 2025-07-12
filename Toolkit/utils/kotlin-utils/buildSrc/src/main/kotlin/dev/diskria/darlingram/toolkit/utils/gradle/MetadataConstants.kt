@@ -1,4 +1,4 @@
-package dev.diskria.darlingram.tools.gradle
+package dev.diskria.darlingram.toolkit.utils.gradle
 
 import java.util.Locale
 import kotlin.reflect.KProperty

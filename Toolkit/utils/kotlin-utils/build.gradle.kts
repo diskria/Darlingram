@@ -1,22 +1,25 @@
-import dev.diskria.darlingram.tools.gradle.GenerateMetadataTask
-import dev.diskria.darlingram.tools.gradle.metadataConstants
+import dev.diskria.darlingram.toolkit.utils.gradle.GenerateMetadataTask
+import dev.diskria.darlingram.toolkit.utils.gradle.metadataConstants
+import dev.diskria.darlingram.toolkit.utils.gradle.value
 
 plugins {
     `maven-publish`
     alias(config.plugins.kotlin.jvm)
 }
 
+val javaVersion: Int = config.versions.java.value()
+
 kotlin {
-    jvmToolchain(config.versions.java.get().toInt())
+    jvmToolchain(javaVersion)
 }
 
 private val kotlinUtilsModuleName: String by rootProject.extra
 private val packageName: String by rootProject.extra
 
 publishing.publications.create<MavenPublication>(kotlinUtilsModuleName) {
-    groupId = toolkit.versions.dev.get()
+    groupId = toolkit.versions.dev.value()
     artifactId = kotlinUtilsModuleName
-    version = toolkit.versions.indev.get()
+    version = toolkit.versions.indev.value()
     from(components["java"])
 }
 
